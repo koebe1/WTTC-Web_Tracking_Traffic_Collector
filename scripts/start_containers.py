@@ -10,7 +10,7 @@ dependencies = path.dependencies
 
 def start_container_set_1_2_3():
     os.chdir("../dependencies")
-    os.system("COMPOSE_PROFILES=all docker-compose up &")
+    os.system("COMPOSE_PROFILES=all docker-compose up --detach &")
 
 
 def stop_containers():
@@ -21,13 +21,9 @@ def stop_containers():
 
 def start_container_set_1_2():
     os.chdir("../dependencies")
-    os.system("COMPOSE_PROFILES=container-set-1-2 docker-compose up &")
+    os.system("COMPOSE_PROFILES=container-set-1-2 docker-compose up  --detach&")
 
 
 def start_container_set_1():
     os.chdir("../dependencies")
-    os.system("COMPOSE_PROFILES=container-set-1 docker-compose up &")
-# def stop_containers_1():
-
-
-start_container_set_1_2_3()
+    os.system("COMPOSE_PROFILES=container-set-1 docker-compose up --detach &")
