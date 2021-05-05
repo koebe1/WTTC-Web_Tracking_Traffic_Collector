@@ -4,6 +4,10 @@ import re
 import time
 import threading
 from start_containers import start_container_set_1_2_3, start_container_set_1_2, start_container_set_1, stop_containers
+from open_website_1 import call_website_1
+from open_website_2 import call_website_2
+from open_website_3 import call_website_3
+
 # FOLDERS
 scripts = path.scripts
 dataset = path.dataset
@@ -14,6 +18,9 @@ curr_dir = path.curr_dir
 get_ublock_log = path.get_ublock_log
 open_docker = path.open_docker
 start_containers = path.start_containers
+open_website_1 = path.open_website_1
+open_website_2 = path.open_website_2
+open_website_3 = path.open_website_3
 
 
 # DOCUMENTS
@@ -44,16 +51,39 @@ def create_folders():
         os.makedirs(os.path.join(curr_dir, stripped))
 
 
-def call_websites():
+# def call_webistes_1_2_3():
+#     os.system("python " + open_website_1 + " & " + "python " +
+#               open_website_2 + " & " + "python " + open_website_3 + " &")
+
+
+# def open_website_1_2():
+#     os.system("python " + open_website_1 + " & " +
+#               "python " + open_website_2 + " &")
+
+
+# def call_single_website():
+#     os.system("python " + open_website_1 + " &")
+
+
+def collect_data():
     temp = website_list.copy()
 
-    for index, website in enumerate(website_list):
+    for website in website_list:
         # check how many container to start according to the number of websites to call (max number containers is 3)
         if len(temp) >= 3:
+            # start 3 containers
             start_container_set_1_2_3()
-            time.sleep(20)
+
+            # wait for containers to start up
+            time.sleep(16)
+
+            website_1 = temp[0]
+            website_2 = temp[1]
+            website_3 = temp[2]
+            call_website_1(website_1)
+            call_website_2(website_2)
+            call_website_3(website_3)
             stop_containers()
-            time.sleep(8)
             print(temp)
             print(temp[0])
             temp.pop(0)
@@ -64,7 +94,6 @@ def call_websites():
             start_container_set_1_2()
             time.sleep(20)
             stop_containers()
-            time.sleep(8)
             print(temp)
             print(temp[0])
             temp.pop(0)
@@ -87,7 +116,7 @@ def main():
     create_folders()
     # os.system('python ' + get_ublock_log)
     # os.system('python ' + open_docker)
-    call_websites()
+    collect_data()
 
 
 main()

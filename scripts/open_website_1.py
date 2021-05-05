@@ -8,12 +8,11 @@ import re
 import shutil
 
 
-
 scripts = path.scripts
 dataset = path.dataset
 dependencies = path.dependencies
-# curr_dir = path.curr_dir"
-curr_dir = "/Users/bene/Desktop/dataset2/captured/04_05_2021 10_24_58"
+curr_dir = path.curr_dir
+
 
 website_list = []
 
@@ -33,25 +32,18 @@ with open(os.path.join(dependencies, 'config.yml')) as f:
     num = config["num"]
 
 
-def call_websites():
-    # for website in website_list:
-    #     start_containers_1()
+def call_website_1(website_1):
     driver1 = webdriver.Remote('http://127.0.0.1:4444')
 
-    driver1.get("https://create-dataset.com")
+    driver1.get(website_1)
     time.sleep(num)
 
-    # stripped = website.replace("https://", "")
-    # shutil.move(os.path.join(dataset, "sslkeylogfile_2.txt"),
-    #             os.path.join(curr_dir, stripped))
-    # shutil.move(os.path.join(dataset, "tcpdump_2.pcap"),
-    #             os.path.join(curr_dir, stripped))
+    stripped = website_1.replace("https://", "")
+    shutil.move(os.path.join(dataset, "sslkeylogfile_1.txt"),
+                os.path.join(curr_dir, stripped))
+    shutil.move(os.path.join(dataset, "tcpdump_1.pcap"),
+                os.path.join(curr_dir, stripped))
 
     # driver1.delete_all_cookies()
-    # driver1.close()
-    # driver1.quit()
-
-    # stop_containers_1()
-
-
-call_websites()
+    driver1.close()
+    driver1.quit()

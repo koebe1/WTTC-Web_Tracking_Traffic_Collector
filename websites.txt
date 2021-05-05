@@ -1,5 +1,3 @@
 https://create-dataset.com
 https://theverge.com
 https://apple.com
-https://test.com
-https://example.com
