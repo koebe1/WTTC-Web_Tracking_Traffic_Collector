@@ -1,0 +1,82 @@
+version: "3.8"
+services:
+  chrome1:
+    container_name: chrome1
+    ports:
+      - "4444:4444"
+    volumes:
+      - "/Users/bene/Desktop/dataset2:/ssl"
+    environment:
+      - SSLKEYLOGFILE=ssl/sslkeylogfile_1.txt
+    image: headless1
+    profiles:
+      - container-set-1
+      - container-set-1-2
+      - all
+
+  tcpdump1:
+    container_name: tcpdump1
+    depends_on:
+      - "chrome1"
+    network_mode: "service:chrome1"
+    volumes:
+      - "/Users/bene/Desktop/dataset2:/tcpdump"
+    image: "kaazing/tcpdump"
+    command: "not host 127.0.0.1 and not host 172.17.0.1 -v -i any -w  tcpdump/tcpdump_1.pcap"
+    profiles:
+      - container-set-1
+      - container-set-1-2
+      - all
+
+  chrome2:
+    container_name: chrome2
+    ports:
+      - "4445:4445"
+    volumes:
+      - "/Users/bene/Desktop/dataset2:/ssl"
+    environment:
+      - SSLKEYLOGFILE=ssl/sslkeylogfile_2.txt
+    image: headless2
+    profiles:
+      - container-set-2
+      - container-set-1-2
+      - all
+
+  tcpdump2:
+    container_name: tcpdump2
+    depends_on:
+      - "chrome2"
+    network_mode: "service:chrome2"
+    volumes:
+      - "/Users/bene/Desktop/dataset2:/tcpdump"
+    image: "kaazing/tcpdump"
+    command: "not host 127.0.0.1 and not host 172.17.0.1 -v -i any -w  tcpdump/tcpdump_2.pcap"
+    profiles:
+      - container-set-2
+      - container-set-1-2
+      - all
+
+  chrome3:
+    container_name: chrome3
+    ports:
+      - "4446:4446"
+    volumes:
+      - "/Users/bene/Desktop/dataset2:/ssl"
+    environment:
+      - SSLKEYLOGFILE=ssl/sslkeylogfile_3.txt
+    image: headless3
+    profiles:
+      - container-set-3
+      - all
+  tcpdump3:
+    container_name: tcpdump3
+    depends_on:
+      - "chrome3"
+    network_mode: "service:chrome3"
+    volumes:
+      - "/Users/bene/Desktop/dataset2:/tcpdump"
+    image: "kaazing/tcpdump"
+    command: "not host 127.0.0.1 and not host 172.17.0.1 -v -i any -w  tcpdump/tcpdump_3.pcap"
+    profiles:
+      - container-set-3
+      - all
