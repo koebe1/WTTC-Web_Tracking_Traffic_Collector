@@ -5,8 +5,13 @@ import time
 import yaml
 import shutil
 import datetime
+import subprocess
+import sys
+import psutil
 from selenium import webdriver
 import multiprocessing
+from open_docker import open_docker_app
+from get_ublock_log import extract_ublock_log
 from website_calls import call_website_1, call_website_2, call_website_3, call_website_4, call_website_5
 from start_containers import stop_containers, start_container_set_1, start_container_set_2, start_container_set_3, start_container_set_5
 
@@ -142,18 +147,31 @@ def call_parallel_2(website_1, website_2, curr_dir):
         c2.join()
 
 
+def call_parallel_1(website_1, curr_dir):
+
+    # call websites simultaneously
+    c1 = multiprocessing.Process(
+        target=call_website_1, args=[website_1, curr_dir])
+
+    if __name__ == "__main__":
+        c1.start()
+        c1.join()
+
+
 def collect_data(curr_dir):
     temp = website_list.copy()
 
     # check how many container to start according to the number of websites to call (max number containers is 3)
     while len(temp) > 0:
+
+        # 5 chrome containers
         if len(temp) >= 5:
 
             # start 3 containers
             start_container_set_5()
 
             # wait for containers to start up
-            time.sleep(20)
+            time.sleep(15)
 
             # get next websites to call
             website_1 = temp[0]
@@ -165,9 +183,10 @@ def collect_data(curr_dir):
             call_parallel_5(website_1, website_2, website_3,
                             website_4, website_5, curr_dir)
 
-            print("LEFT THE CALL PARALLEL 3")
+            print("LEFT THE CALL PARALLEL 5")
 
             stop_containers()
+            time.sleep(1)
             # remove websites from copied list temp
             temp.pop(0)
             temp.pop(0)
@@ -175,13 +194,14 @@ def collect_data(curr_dir):
             temp.pop(0)
             temp.pop(0)
 
-        if len(temp) >= 3:
+        # 3 chrome containers
+        elif len(temp) < 5 and len(temp) >= 3:
 
             # start 3 containers
             start_container_set_3()
 
             # wait for containers to start up
-            time.sleep(10)
+            time.sleep(15)
 
             # get next websites to call
             website_1 = temp[0]
@@ -191,14 +211,15 @@ def collect_data(curr_dir):
             call_parallel_3(website_1, website_2, website_3, curr_dir)
 
             print("LEFT THE CALL PARALLEL 3")
-
+            time.sleep(1)
             stop_containers()
             # remove websites from copied list temp
             temp.pop(0)
             temp.pop(0)
             temp.pop(0)
 
-        elif len(temp) == 2:
+        # 2 chrome containers
+        elif len(temp) < 3 and len(temp) >= 2:
             start_container_set_2()
 
             # wait for containers to start up
@@ -211,13 +232,13 @@ def collect_data(curr_dir):
             # call websites parralel
             call_parallel_2(website_1, website_2, curr_dir)
 
-            print("LEFT CALL PARRALEL 2")
-
+            time.sleep(1)
             stop_containers()
 
             temp.pop(0)
             temp.pop(0)
 
+        # 1 chrome containers
         elif len(temp) == 1:
             start_container_set_1()
 
@@ -228,15 +249,14 @@ def collect_data(curr_dir):
             website_1 = temp[0]
 
             # call websites parralel
-            call_website_1(website_1, curr_dir)
+            call_parallel_1(website_1, curr_dir)
 
-            print("LEFT CALL PARRALEL 1")
-
+            time.sleep(1)
             stop_containers()
 
             temp.pop(0)
 
-    print("done!")
+    print("finished!")
 
 
 def main():
@@ -257,6 +277,29 @@ def main():
         for stripped in stripped_website_list:
             stripped_path = os.path.join(curr_dir, stripped)
             create_folder(stripped_path)
+
+        # starting uBlock log extraction and open docker simultaneously if docker app is open
+        extract = multiprocessing.Process(
+            target=extract_ublock_log, args=[curr_dir])
+
+        with open(os.path.join(dependencies, 'config.yml')) as f:
+            config = yaml.safe_load(f)
+            docker_path = config["docker_path"]
+
+        # check if docker app is open, if not open app and wait
+        if "docker" in (p.name() for p in psutil.process_iter()):
+            print("Docker is up and running...")
+
+        # start docker application
+        else:
+            opener = "open" if sys.platform == "darwin" else "xdg-open"
+            subprocess.call([opener, docker_path])
+            print("Starting Docker...")
+            time.sleep(20)
+
+        # start uBlock log extraction
+        extract.start()
+        extract.join()
 
         # start docker and call the websites
         collect_data(curr_dir)
