@@ -11,7 +11,7 @@ import shutil
 scripts = path.scripts
 dataset = path.dataset
 dependencies = path.dependencies
-curr_dir = path.curr_dir
+
 
 
 website_list = []

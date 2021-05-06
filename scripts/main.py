@@ -27,8 +27,9 @@ website_txt = "/Users/bene/Desktop/dataset2/websites.txt"
 # DATA
 website_list = []
 stripped_website_list = []
-curr_dir = os.path.join(
-    captured, datetime.datetime.now().strftime('%d_%m_%Y %H_%M_%S'))
+# curr_dir = os.path.join(
+#     captured, datetime.datetime.now().strftime('%d_%m_%Y %H_%M_%S'))
+
 
 # FUNCTIONS
 
@@ -54,29 +55,29 @@ stripped_website_list = l[1]
 #  MORGEN WEITERMACHEN FOLDER COUNT FUNKTIONIERT NICHT RICHTIG -> BRICHT NACH EXP 1 AB ORDNER ZU ERSTELLEN
 
 
-def create_folders():
+def create_folder(directory):
     try:
-        # create folder with timestamp
-        # os.makedirs(curr_dir, exist_ok=True)
-        dir_num = str(sum(os.path.isdir(i) for i in os.listdir(captured)))
-        directory = os.path.join(captured, "exp. " + dir_num)
-        os.makedirs(directory)
-
-        # create ublock_log folder
-        ublock_log_path = os.path.join(directory, "ublock_log")
-        os.makedirs(ublock_log_path, exist_ok=True)
-
-        for stripped in stripped_website_list:
-            os.makedirs(os.path.join(directory, stripped))
-
+        if not os.path.exists(directory):
+            os.makedirs(directory)
     except OSError as e:
-        if e.errno != 17:
-            print("Error:", e)
+        print('Error creating folder:' + e)
 
 
-create_folders()
+def create_folders(directory):
+    curr_dir = os.path.join(captured, directory)
+    # create folder with timestamp
+    create_folder(curr_dir)
+
+    # create ublock_log folder
+    ublock_log_path = os.path.join(curr_dir, "ublock_log")
+    create_folder(ublock_log_path)
+
+    for stripped in stripped_website_list:
+        s = os.path.join(curr_dir, stripped)
+        create_folder(s)
+
+
 # manage DOCKER COMPOSE
-
 
 def start_container_set_1_2_3():
     os.chdir("../dependencies")
@@ -105,10 +106,10 @@ with open(os.path.join(dependencies, 'config.yml')) as f:
     num = config["num"]
 
 
-def call_website_1(website_1):
-    driver1 = webdriver.Remote('http://127.0.0.1:4444')
+def call_website_1(website_1, curr_dir):
+    driver_1 = webdriver.Remote('http://127.0.0.1:4444')
 
-    driver1.get(website_1)
+    driver_1.get(website_1)
     time.sleep(num)
 
     stripped = website_1.replace("https://", "")
@@ -117,15 +118,15 @@ def call_website_1(website_1):
     shutil.move(os.path.join(dataset, "tcpdump_1.pcap"),
                 os.path.join(curr_dir, stripped))
 
-    # driver1.delete_all_cookies()
-    driver1.close()
-    driver1.quit()
+    # driver_1.delete_all_cookies()
+    driver_1.close()
+    driver_1.quit()
 
 
-def call_website_2(website_2):
-    driver1 = webdriver.Remote('http://127.0.0.1:4445')
+def call_website_2(website_2, curr_dir):
+    driver_2 = webdriver.Remote('http://127.0.0.1:4445')
 
-    driver1.get(website_2)
+    driver_2.get(website_2)
     time.sleep(num)
 
     stripped = website_2.replace("https://", "")
@@ -134,14 +135,14 @@ def call_website_2(website_2):
     shutil.move(os.path.join(dataset, "tcpdump_2.pcap"),
                 os.path.join(curr_dir, stripped))
 
-    # driver1.delete_all_cookies()
-    driver1.close()
-    driver1.quit()
+    # driver_2.delete_all_cookies()
+    driver_2.close()
+    driver_2.quit()
 
 
-def call_website_3(website_3):
-    driver1 = webdriver.Remote('http://127.0.0.1:4446')
-    driver1.get(website_3)
+def call_website_3(website_3, curr_dir):
+    driver_3 = webdriver.Remote('http://127.0.0.1:4446')
+    driver_3.get(website_3)
 
     time.sleep(num)
 
@@ -151,40 +152,72 @@ def call_website_3(website_3):
     shutil.move(os.path.join(dataset, "tcpdump_3.pcap"),
                 os.path.join(curr_dir, stripped))
 
-    # driver1.delete_all_cookies()
-    driver1.close()
-    driver1.quit()
+    # driver_1.delete_all_cookies()
+    driver_3.close()
+    driver_3.quit()
 
 
 # manage PARALLEL CALLS
-def call_parallel(website_1, website_2, website_3):
+def call_parallel_3(website_1, website_2, website_3, curr_dir):
 
     # call websites simultaneously
     c1 = multiprocessing.Process(
-        target=call_website_1, args=[website_1])
+        target=call_website_1, args=[website_1, curr_dir])
 
     c2 = multiprocessing.Process(
-        target=call_website_2, args=[website_2])
+        target=call_website_2, args=[website_2, curr_dir])
     c3 = multiprocessing.Process(
-        target=call_website_3, args=[website_3])
+        target=call_website_3, args=[website_3, curr_dir])
 
     if __name__ == "__main__":
-
         c1.start()
         c2.start()
         c3.start()
         c1.join()
         c2.join()
         c3.join()
+        c1.terminate()
+        c2.terminate()
+        c3.terminate()
 
 
-def collect_data():
+def call_parallel_2(website_1, website_2, curr_dir):
+
+    # call websites simultaneously
+    c1 = multiprocessing.Process(
+        target=call_website_1, args=[website_1, curr_dir])
+
+    c2 = multiprocessing.Process(
+        target=call_website_2, args=[website_2, curr_dir])
+
+    if __name__ == "__main__":
+        c1.start()
+        c2.start()
+        c1.join()
+        c2.join()
+        c1.terminate()
+        c2.terminate()
+
+
+# def call_parallel_1(website_1, curr_dir):
+
+#     # call websites simultaneously
+#     c1 = multiprocessing.Process(
+#         target=call_website_1, args=[website_1, curr_dir])
+
+#     if __name__ == "__main__":
+#         c1.start()
+#         c1.join()
+#         c1.terminate()
+
+
+def collect_data(curr_dir):
     temp = website_list.copy()
 
-    for website in website_list:
-        print("test")
-        # check how many container to start according to the number of websites to call (max number containers is 3)
+    # check how many container to start according to the number of websites to call (max number containers is 3)
+    while len(temp) > 0:
         if len(temp) >= 3:
+
             # start 3 containers
             start_container_set_1_2_3()
 
@@ -196,8 +229,10 @@ def collect_data():
             website_2 = temp[1]
             website_3 = temp[2]
 
-            call_parallel(website_1, website_2, website_3)
-            time.sleep(10)
+            call_parallel_3(website_1, website_2, website_3, curr_dir)
+
+            print("LEFT THE CALL PARALLEL 3")
+
             stop_containers()
             # remove websites from copied list temp
             temp.pop(0)
@@ -206,40 +241,66 @@ def collect_data():
 
         elif len(temp) == 2:
             start_container_set_1_2()
-            time.sleep(20)
+
+            # wait for containers to start up
+            time.sleep(12)
+
+            # get next websites to call
+            website_1 = temp[0]
+            website_2 = temp[1]
+
+            # call websites parralel
+            call_parallel_2(website_1, website_2, curr_dir)
+
+            print("LEFT CALL PARRALEL 2")
+
             stop_containers()
-            print(temp)
-            print(temp[0])
+
             temp.pop(0)
             temp.pop(0)
 
         elif len(temp) == 1:
             start_container_set_1()
-            time.sleep(20)
+
+            # wait for containers to start up
+            time.sleep(12)
+
+            # get next websites to call
+            website_1 = temp[0]
+
+            # call websites parralel
+            call_website_1(website_1, curr_dir)
+
+            print("LEFT CALL PARRALEL 1")
+
             stop_containers()
-            print(temp)
-            print(temp[0])
+
             temp.pop(0)
 
-        elif len(temp) == 0:
-            print("done!")
-            break
+    print("done")
 
 
 def main():
-    create_folders()
-    # os.system('python ' + get_ublock_log)
-    # os.system('python ' + open_docker)
-    collect_data()
+
+    if __name__ == "__main__":
+
+        # create folder system
+        directory = input("Enter a directory name:")
+        curr_dir = os.path.join(captured, directory)
+
+        # create folder from user input
+        create_folder(curr_dir)
+
+        # create ublock_log folder
+        ublock_log_path = os.path.join(curr_dir, "ublock_log")
+        create_folder(ublock_log_path)
+
+        for stripped in stripped_website_list:
+            stripped_path = os.path.join(curr_dir, stripped)
+            create_folder(stripped_path)
+
+        # start docker and call the websites
+        collect_data(curr_dir)
 
 
-# main()
-
-
-# create_folders()
-
-# website_1 = website_list[0]
-# website_2 = website_list[1]
-# website_3 = website_list[2]
-
-# call_parallel(website_1, website_2, website_3)
+main()
