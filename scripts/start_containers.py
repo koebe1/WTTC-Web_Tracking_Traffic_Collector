@@ -1,6 +1,5 @@
 import path
 import os
-import time
 
 
 scripts = path.scripts
@@ -8,9 +7,15 @@ dataset = path.dataset
 dependencies = path.dependencies
 
 
-def start_container_set_1_2_3():
+# manage DOCKER COMPOSE
+def start_container_set_5():
     os.chdir("../dependencies")
-    os.system("COMPOSE_PROFILES=all docker-compose up --detach &")
+    os.system("COMPOSE_PROFILES=container-set-5 docker-compose up --detach &")
+
+
+def start_container_set_3():
+    os.chdir("../dependencies")
+    os.system("COMPOSE_PROFILES=container-set-3 docker-compose up --detach &")
 
 
 def stop_containers():
@@ -19,9 +24,9 @@ def stop_containers():
     # os.system("docker compose down")
 
 
-def start_container_set_1_2():
+def start_container_set_2():
     os.chdir("../dependencies")
-    os.system("COMPOSE_PROFILES=container-set-1-2 docker-compose up  --detach&")
+    os.system("COMPOSE_PROFILES=container-set-2 docker-compose up  --detach&")
 
 
 def start_container_set_1():

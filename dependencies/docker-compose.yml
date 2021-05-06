@@ -11,7 +11,9 @@ services:
     image: headless1
     profiles:
       - container-set-1
-      - container-set-1-2
+      - container-set-2
+      - container-set-3
+      - container-set-5
       - all
 
   tcpdump1:
@@ -25,7 +27,9 @@ services:
     command: "not host 127.0.0.1 and not host 172.17.0.1 -v -i any -w  tcpdump/tcpdump_1.pcap"
     profiles:
       - container-set-1
-      - container-set-1-2
+      - container-set-2
+      - container-set-3
+      - container-set-5
       - all
 
   chrome2:
@@ -39,7 +43,8 @@ services:
     image: headless2
     profiles:
       - container-set-2
-      - container-set-1-2
+      - container-set-3
+      - container-set-5
       - all
 
   tcpdump2:
@@ -53,7 +58,8 @@ services:
     command: "not host 127.0.0.1 and not host 172.17.0.1 -v -i any -w  tcpdump/tcpdump_2.pcap"
     profiles:
       - container-set-2
-      - container-set-1-2
+      - container-set-3
+      - container-set-5
       - all
 
   chrome3:
@@ -67,7 +73,9 @@ services:
     image: headless3
     profiles:
       - container-set-3
+      - container-set-5
       - all
+
   tcpdump3:
     container_name: tcpdump3
     depends_on:
@@ -79,4 +87,57 @@ services:
     command: "not host 127.0.0.1 and not host 172.17.0.1 -v -i any -w  tcpdump/tcpdump_3.pcap"
     profiles:
       - container-set-3
+      - container-set-5
+      - all
+
+  chrome4:
+    container_name: chrome4
+    ports:
+      - "4447:4447"
+    volumes:
+      - "/Users/bene/Desktop/dataset2:/ssl"
+    environment:
+      - SSLKEYLOGFILE=ssl/sslkeylogfile_4.txt
+    image: headless4
+    profiles:
+      - container-set-5
+      - all
+
+  tcpdump4:
+    container_name: tcpdump4
+    depends_on:
+      - "chrome4"
+    network_mode: "service:chrome4"
+    volumes:
+      - "/Users/bene/Desktop/dataset2:/tcpdump"
+    image: "kaazing/tcpdump"
+    command: "not host 127.0.0.1 and not host 172.17.0.1 -v -i any -w  tcpdump/tcpdump_4.pcap"
+    profiles:
+      - container-set-5
+      - all
+
+  chrome5:
+    container_name: chrome5
+    ports:
+      - "4448:4448"
+    volumes:
+      - "/Users/bene/Desktop/dataset2:/ssl"
+    environment:
+      - SSLKEYLOGFILE=ssl/sslkeylogfile_5.txt
+    image: headless5
+    profiles:
+      - container-set-5
+      - all
+
+  tcpdump5:
+    container_name: tcpdump5
+    depends_on:
+      - "chrome5"
+    network_mode: "service:chrome5"
+    volumes:
+      - "/Users/bene/Desktop/dataset2:/tcpdump"
+    image: "kaazing/tcpdump"
+    command: "not host 127.0.0.1 and not host 172.17.0.1 -v -i any -w  tcpdump/tcpdump_5.pcap"
+    profiles:
+      - container-set-5
       - all

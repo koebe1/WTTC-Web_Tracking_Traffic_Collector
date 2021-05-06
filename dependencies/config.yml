@@ -1,7 +1,7 @@
 # CONFIGURATIONS for the get_data programm
 
 # Specify time (in seconds) between website calls
-num: 5
+num: 10
 
 # Specify the path to your chrome-user-data-directory
 chrome_profile: "user-data-dir=/Users/bene/Library/Application Support/Google/Chrome/Default/Default"
