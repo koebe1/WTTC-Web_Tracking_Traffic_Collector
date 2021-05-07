@@ -59,16 +59,16 @@ def extract_ublock_log(curr_dir):
         driver.get(
             'chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/logger-ui.html?popup=1')
         uBlock_window = driver.current_window_handle
-        driver.switch_to.new_window('tab')
+
+        # open all websites in the list in new tabs and wait for num (config.yml) seconds
+        for website in websites:
+            driver.switch_to.new_window(website)
+            driver.get(website)
+
+        time.sleep(num)
 
         # maximize browser window
         # driver.maximize_window()
-
-        for website in websites:
-            driver.get(website)
-
-            # specify time between website loads
-            time.sleep(num)
 
         for window_handle in driver.window_handles:
             if window_handle != uBlock_window:
@@ -118,7 +118,7 @@ def extract_ublock_log(curr_dir):
 
     def writeClipboardToFile():
 
-        joined_path = os.path.join(curr_dir, "ublock_log", "ublock_log.txt")
+        joined_path = os.path.join(curr_dir, "ublock_log.txt")
 
         ublock_output = pyperclip.paste()
         f = open(joined_path, "w+")

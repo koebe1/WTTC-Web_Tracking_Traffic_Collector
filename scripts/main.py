@@ -10,6 +10,7 @@ import sys
 import psutil
 from selenium import webdriver
 import multiprocessing
+from label import label_data
 from open_docker import open_docker_app
 from get_ublock_log import extract_ublock_log
 from website_calls import call_website_1, call_website_2, call_website_3, call_website_4, call_website_5
@@ -55,7 +56,8 @@ l = get_website_list()
 website_list = l[0]
 stripped_website_list = l[1]
 
-#  MORGEN WEITERMACHEN FOLDER COUNT FUNKTIONIERT NICHT RICHTIG -> BRICHT NACH EXP 1 AB ORDNER ZU ERSTELLEN
+
+# function to create folders for folder system in application directory
 
 
 def create_folder(directory):
@@ -64,20 +66,6 @@ def create_folder(directory):
             os.makedirs(directory)
     except OSError as e:
         print('Error creating folder:' + e)
-
-
-def create_folders(directory):
-    curr_dir = os.path.join(captured, directory)
-    # create folder with timestamp
-    create_folder(curr_dir)
-
-    # create ublock_log folder
-    ublock_log_path = os.path.join(curr_dir, "ublock_log")
-    create_folder(ublock_log_path)
-
-    for stripped in stripped_website_list:
-        s = os.path.join(curr_dir, stripped)
-        create_folder(s)
 
 
 # manage PARALLEL CALLS
@@ -163,6 +151,7 @@ def collect_data(curr_dir):
 
     # check how many container to start according to the number of websites to call (max number containers is 3)
     while len(temp) > 0:
+        print("Starting to collect web traffic...")
 
         # 5 chrome containers
         if len(temp) >= 5:
@@ -182,8 +171,6 @@ def collect_data(curr_dir):
 
             call_parallel_5(website_1, website_2, website_3,
                             website_4, website_5, curr_dir)
-
-            print("LEFT THE CALL PARALLEL 5")
 
             stop_containers()
             time.sleep(1)
@@ -210,7 +197,6 @@ def collect_data(curr_dir):
 
             call_parallel_3(website_1, website_2, website_3, curr_dir)
 
-            print("LEFT THE CALL PARALLEL 3")
             time.sleep(1)
             stop_containers()
             # remove websites from copied list temp
@@ -256,7 +242,36 @@ def collect_data(curr_dir):
 
             temp.pop(0)
 
-    print("finished!")
+
+def create_json_and_label_data(curr_dir):
+    # get list of subdirectories
+    sub_dirs = (next(os.walk(curr_dir))[1])
+
+    print("Creating JSON and labeling data...")
+
+    # loop through subdirectories
+    for sub_dir in sub_dirs:
+
+        sub_dir_path = os.path.join(captured, curr_dir, sub_dir)
+
+        # change directory to sub_dir
+        os.chdir(sub_dir_path)
+
+        # loop throuh current directory
+        for file in os.listdir('.'):
+            if re.match('tcpdump', file):
+                os.rename(file, "tcpdump.pcap")
+
+            elif re.match('sslkeylogfile', file):
+                os.rename(file, "sslkeylogfile.txt")
+
+        ssl_path = os.path.join(
+            captured, curr_dir, sub_dir, "sslkeylogfile.txt")
+
+        os.system(
+            f"tshark -r tcpdump.pcap -T json > data.json -o tls.keylog_file:{ssl_path} --no-duplicate-keys")
+
+        label_data(curr_dir, sub_dir)
 
 
 def main():
@@ -271,8 +286,8 @@ def main():
         create_folder(curr_dir)
 
         # create ublock_log folder
-        ublock_log_path = os.path.join(curr_dir, "ublock_log")
-        create_folder(ublock_log_path)
+        # ublock_log_path = os.path.join(curr_dir, "ublock_log")
+        # create_folder(ublock_log_path)
 
         for stripped in stripped_website_list:
             stripped_path = os.path.join(curr_dir, stripped)
@@ -303,6 +318,14 @@ def main():
 
         # start docker and call the websites
         collect_data(curr_dir)
+        create_json_and_label_data(curr_dir)
+        print("finsihed!")
 
 
 main()
+
+
+# AUTOMATISIERTE MARKIERUNG DER DATENPAKETE
+# Schleife durch alle Ordner außer ublock (evtl nur ublocklog file speichern und nicht ordner)
+# in jedem ordner automatische markierung ?
+# ODER alle files zusammenfügen und dann auswerten?
