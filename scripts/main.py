@@ -10,6 +10,7 @@ import sys
 import psutil
 from selenium import webdriver
 import multiprocessing
+from write_statistics import write_statistic
 from label import label_data
 from open_docker import open_docker_app
 from get_ublock_log import extract_ublock_log
@@ -271,7 +272,10 @@ def create_json_and_label_data(curr_dir):
         os.system(
             f"tshark -r tcpdump.pcap -T json > data.json -o tls.keylog_file:{ssl_path} --no-duplicate-keys")
 
+        # label data packets
         label_data(curr_dir, sub_dir)
+        # write statistics for captured data
+        write_statistic(curr_dir, sub_dir)
 
 
 def main():

@@ -17,7 +17,7 @@ def label_data(curr_dir, sub_dir):
             content = log.read().splitlines()
 
         ublock_log_list = []
-
+        blocked_urls_ublock = []
         index_list = []
 
         # get indexes of blocked signs "--" in uBlockLog.txt -> indicates blocked element
@@ -29,6 +29,7 @@ def label_data(curr_dir, sub_dir):
 
             # strip url https://example.com/home?width=10 ----> example.com
             stripped_url = urlparse(content[index+4]).netloc
+            blocked_urls_ublock.append(content[index+4])
 
             rule = content[index-1]
 
@@ -98,8 +99,10 @@ def label_data(curr_dir, sub_dir):
 
     ublock_log_list = extract_urls_with_options()
 
+    # blocked_urls_ublock = extract[1]
+
     # CHECK RULES AND OPTIONS
-    print(ublock_log_list)
+    # print(ublock_log_list)
 
     # path to JSON file
     data_json = os.path.join(captured, curr_dir, sub_dir, "data.json")
