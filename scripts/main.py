@@ -10,7 +10,7 @@ import sys
 import psutil
 from selenium import webdriver
 import multiprocessing
-from write_statistics import write_statistic
+from write_statistics import write_statistic, extract_url_ublock
 from label import label_data
 from open_docker import open_docker_app
 from get_ublock_log import extract_ublock_log
@@ -250,6 +250,8 @@ def create_json_and_label_data(curr_dir):
 
     print("Creating JSON and labeling data...")
 
+    total_blocked_urls_app = 0
+
     # loop through subdirectories
     for sub_dir in sub_dirs:
 
@@ -269,13 +271,26 @@ def create_json_and_label_data(curr_dir):
         ssl_path = os.path.join(
             captured, curr_dir, sub_dir, "sslkeylogfile.txt")
 
+        # create json file from tcpdump.pcap file
         os.system(
             f"tshark -r tcpdump.pcap -T json > data.json -o tls.keylog_file:{ssl_path} --no-duplicate-keys")
 
         # label data packets
         label_data(curr_dir, sub_dir)
         # write statistics for captured data
-        write_statistic(curr_dir, sub_dir)
+
+        # add up number of blocked elements by the application
+        t = write_statistic(curr_dir, sub_dir)
+        total_blocked_urls_app += t
+
+        extracted = extract_url_ublock(curr_dir, sub_dir)
+
+        total_blocked_urls_ublock = extracted[0]
+        # blocked_urls_ublock = extracted[1]
+
+        s = open(os.path.join(captured, curr_dir, "total_statistics.txt"), "w+")
+        s.write(
+            f"Blocked URLS:     Application:   {total_blocked_urls_app}       Ublock:   {total_blocked_urls_ublock}")
 
 
 def main():
@@ -323,7 +338,7 @@ def main():
         # start docker and call the websites
         collect_data(curr_dir)
         create_json_and_label_data(curr_dir)
-        print("finsihed!")
+        print("Finsihed!")
 
 
 main()

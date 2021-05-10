@@ -27,7 +27,7 @@ def call_website_1(website_1, curr_dir):
     shutil.move(os.path.join(dataset, "tcpdump_1.pcap"),
                 os.path.join(curr_dir, stripped))
 
-    # driver1.delete_all_cookies()
+    driver1.delete_all_cookies()
     driver1.close()
     driver1.quit()
 
@@ -44,7 +44,7 @@ def call_website_2(website_2, curr_dir):
     shutil.move(os.path.join(dataset, "tcpdump_2.pcap"),
                 os.path.join(curr_dir, stripped))
 
-    # driver_2.delete_all_cookies()
+    driver_2.delete_all_cookies()
     driver_2.close()
     driver_2.quit()
 
@@ -61,7 +61,7 @@ def call_website_3(website_3, curr_dir):
     shutil.move(os.path.join(dataset, "tcpdump_3.pcap"),
                 os.path.join(curr_dir, stripped))
 
-    # driver_3.delete_all_cookies()
+    driver_3.delete_all_cookies()
     driver_3.close()
     driver_3.quit()
 
@@ -78,7 +78,7 @@ def call_website_4(website_4, curr_dir):
     shutil.move(os.path.join(dataset, "tcpdump_4.pcap"),
                 os.path.join(curr_dir, stripped))
 
-    # driver_3.delete_all_cookies()
+    driver_4.delete_all_cookies()
     driver_4.close()
     driver_4.quit()
 
@@ -95,6 +95,6 @@ def call_website_5(website_5, curr_dir):
     shutil.move(os.path.join(dataset, "tcpdump_5.pcap"),
                 os.path.join(curr_dir, stripped))
 
-    # driver_3.delete_all_cookies()
+    driver_5.delete_all_cookies()
     driver_5.close()
     driver_5.quit()
