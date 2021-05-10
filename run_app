@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# get path of the scripts directory -> dataset
+dataset=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+
+cd 
+
+cd $dataset/scripts
+
+# run application
+python3 main.py
