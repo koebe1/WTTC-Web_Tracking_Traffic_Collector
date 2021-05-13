@@ -99,8 +99,6 @@ def label_data(curr_dir, sub_dir):
 
     ublock_log_list = extract_urls_with_options()
 
-    # blocked_urls_ublock = extract[1]
-
     # CHECK RULES AND OPTIONS
     # print(ublock_log_list)
 

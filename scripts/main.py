@@ -39,12 +39,14 @@ stripped_website_list = []
 
 # FUNCTIONS
 
+# opens websites.txt file and extracts the websites into an array
 def get_website_list():
 
     with open(website_txt) as file:
         content = file.read()
         websites = re.findall(r'(https?://[^\s]+)', content)
 
+    # website_list: [https://example.com,...] stripped_website_list: [example.com,...]
     for website in websites:
         website_list.append(website)
         stripped = website.replace("https://", "")
@@ -304,10 +306,7 @@ def main():
         # create folder from user input
         create_folder(curr_dir)
 
-        # create ublock_log folder
-        # ublock_log_path = os.path.join(curr_dir, "ublock_log")
-        # create_folder(ublock_log_path)
-
+        # create subdirectories
         for stripped in stripped_website_list:
             stripped_path = os.path.join(curr_dir, stripped)
             create_folder(stripped_path)
@@ -316,6 +315,7 @@ def main():
         extract = multiprocessing.Process(
             target=extract_ublock_log, args=[curr_dir])
 
+        # get docker_path from config.yml
         with open(os.path.join(dependencies, 'config.yml')) as f:
             config = yaml.safe_load(f)
             docker_path = config["docker_path"]
