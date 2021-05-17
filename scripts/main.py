@@ -344,7 +344,3 @@ def main():
 main()
 
 
-# AUTOMATISIERTE MARKIERUNG DER DATENPAKETE
-# Schleife durch alle Ordner außer ublock (evtl nur ublocklog file speichern und nicht ordner)
-# in jedem ordner automatische markierung ?
-# ODER alle files zusammenfügen und dann auswerten?
