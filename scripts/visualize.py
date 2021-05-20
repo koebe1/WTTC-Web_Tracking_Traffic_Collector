@@ -1,7 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from matplotlib.ticker import ScalarFormatter
 
+total = pd.read_json(
+    "/Users/bene/Desktop/dataset2/captured/TOTAL_create-dataset/total_filtered.json")
 
 html = pd.read_json(
     "/Users/bene/Desktop/dataset2/captured/create-dataset_html/create-dataset.com/filtered.json")
@@ -43,9 +46,80 @@ canvas = pd.read_json(
 
 
 # PLOTTING
+# bar plot number of packets and distribution tcp/udp/trackers
+def dataset_total():
+    total_len = len(total)
+    total_tcp = total.tcp.count()
+    total_udp = total.udp.count()
+    total_tracker = len(total[total.tracker == 'true'])
 
-# bar plot --> split of the dataset <--
+    labels = ["Synthetischer Datensatz"]
+
+    x = np.arange(len(labels))
+
+    width = 0.25
+
+    # 1 color=(0.71, 0.76, 0.86)
+    # 2 color=(0.49, 0.6, 0.78)
+    # 3 color=(0.235, 0.39, 0.58)
+    # 4 color=(0.6, 0.53, 0.64)
+
+    fig, ax = plt.subplots()
+
+    rects1 = ax.bar(x - 1.5*width, total_len,
+                    width, label='Datenpakete gesamt', color=(0.71, 0.76, 0.86))
+    rects2 = ax.bar(x-width/2, total_tcp, width, label='TCP-Pakete',
+                    color=(0.49, 0.6, 0.78))
+    rects3 = ax.bar(x+width/2, total_udp, width,
+                    label='UDP-Pakete', color=(0.235, 0.39, 0.58))
+
+    rects4 = ax.bar(x + 1.5*width, total_tracker, width,
+                    label='Tracker', color=(0.6, 0.53, 0.64))
+
+    rects5 = ax.bar(x + 2.5*width, 0, width)
+
+    rects6 = ax.bar(x + 3.5*width, 0, width)
+
+    # rects7 = ax.bar(x + 4.5*width, 0, width)
+
+    ax.set_ylabel('Anzahl Datenpakete')
+
+    ax.set_title('Verteilung der Datenpakete')
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.legend()
+
+    # ax.bar_label(rects0, padding=1)
+
+    ax.bar_label(rects1, padding=1)
+    ax.bar_label(rects2, padding=1)
+    ax.bar_label(rects3, padding=1)
+    ax.bar_label(rects4, padding=1)
+    # ax.bar_label(rects5, padding=1)
+    # ax.bar_label(rects6, padding=1)
+    # ax.bar_label(rects7, padding=1)
+    fig.tight_layout()
+
+    plt.yscale('symlog', linthreshy=100)
+
+    ax.yaxis.set_major_formatter(ScalarFormatter())
+    plt.ylim(0, 3000)
+    plt.show()
+
+
+# dataset_total()
+
+
 def dataset_split_barplot():
+
+    html_tracker = 0
+    css_tracker = 0
+    js_tracker = 0
+    sess_tracker = len(sess[sess.tracker == 'true'])
+    facebook_tracker = len(facebook[facebook.tracker == 'true'])
+    twitter_tracker = len(twitter[twitter.tracker == 'true'])
+    google_tracker = len(google[google.tracker == 'true'])
+    canvas_tracker = len(canvas[canvas.tracker == 'true'])
 
     html_len = len(html)
     html_tcp = html.tcp.count()
@@ -90,10 +164,13 @@ def dataset_split_barplot():
     udp_packets = [html_udp, css_udp, js_udp, sess_udp,
                    facebook_udp, twitter_udp, google_udp, canvas_udp]
 
+    tracker_packets = [html_tracker, css_tracker, js_tracker, sess_tracker,
+                       facebook_tracker, twitter_tracker, google_tracker, canvas_tracker]
+
     # label locations
     x = np.arange(len(labels))
 
-    width = 0.3
+    width = 0.2
 
     fig, ax = plt.subplots()
 
@@ -103,6 +180,8 @@ def dataset_split_barplot():
                     color=(0.49, 0.6, 0.78))
     rects3 = ax.bar(x + width, udp_packets, width,
                     label='UDP-Pakete', color=(0.235, 0.39, 0.58))
+    rects4 = ax.bar(x + 2*width, tracker_packets, width,
+                    label='Tracker', color=(0.6, 0.53, 0.64))
 
     # Add some text for labels, title and custom x-axis tick labels, etc.
     ax.set_ylabel('Anzahl Datenpakete')
@@ -114,13 +193,18 @@ def dataset_split_barplot():
     ax.bar_label(rects1, padding=1)
     ax.bar_label(rects2, padding=1)
     ax.bar_label(rects3, padding=1)
+    ax.bar_label(rects4, padding=1)
 
     fig.tight_layout()
 
+    plt.yscale('symlog', linthreshy=25)
+
+    ax.yaxis.set_major_formatter(ScalarFormatter())
+    plt.ylim(0, 2000)
     plt.show()
 
 
-# dataset_split_barplot()
+dataset_split_barplot()
 
 
 def plot_tracker():
@@ -175,4 +259,4 @@ def plot_tracker():
     plt.show()
 
 
-plot_tracker()
+# plot_tracker()
