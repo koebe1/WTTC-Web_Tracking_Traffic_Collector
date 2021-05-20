@@ -1,10 +1,10 @@
-import path
+import paths
 import os
 
 
-scripts = path.scripts
-dataset = path.dataset
-dependencies = path.dependencies
+scripts = paths.scripts
+dataset = paths.dataset
+dependencies = paths.dependencies
 
 
 # manage DOCKER COMPOSE

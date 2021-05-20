@@ -10,15 +10,15 @@ import argparse
 import re
 import pyperclip
 import yaml
-import path
+import paths
 
 
 def extract_ublock_log(curr_dir):
 
     print("Extracting uBlock log...")
 
-    dependencies = path.dependencies
-    config = path.config
+    dependencies = paths.dependencies
+    config = paths.config
 
     website_txt = "/Users/bene/Desktop/dataset2/websites.txt"
 

@@ -3,13 +3,13 @@ import sys
 import psutil
 import yaml
 import os.path
-import path
+import paths
 import time
 
 
 def open_docker_app():
 
-    dependencies = path.dependencies
+    dependencies = paths.dependencies
 
     with open(os.path.join(dependencies, 'config.yml')) as f:
         config = yaml.safe_load(f)
@@ -26,4 +26,3 @@ def open_docker_app():
         print("Starting Docker...")
 
         # wait for docker to start up
-        

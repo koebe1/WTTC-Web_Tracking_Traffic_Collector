@@ -2,13 +2,13 @@ from selenium import webdriver
 import os
 import time
 import yaml
-import path
+import paths
 import shutil
 
 
-scripts = path.scripts
-dataset = path.dataset
-dependencies = path.dependencies
+scripts = paths.scripts
+dataset = paths.dataset
+dependencies = paths.dependencies
 
 with open(os.path.join(dependencies, 'config.yml')) as f:
     config = yaml.safe_load(f)
@@ -18,7 +18,7 @@ with open(os.path.join(dependencies, 'config.yml')) as f:
 def call_website_1(website_1, curr_dir):
     driver1 = webdriver.Remote('http://127.0.0.1:4444')
 
-    driver1.get(website_1)
+    driver1.get(website_1) 
     time.sleep(num)
 
     stripped = website_1.replace("https://", "")

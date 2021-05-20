@@ -3,7 +3,7 @@ from adblockparser import AdblockRules
 import json
 import os
 import re
-from path import captured
+from paths import captured
 
 
 def label_data(curr_dir, sub_dir):

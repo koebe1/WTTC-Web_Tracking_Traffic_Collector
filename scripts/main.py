@@ -1,4 +1,4 @@
-import path
+import paths
 import os
 import re
 import time
@@ -18,15 +18,15 @@ from website_calls import call_website_1, call_website_2, call_website_3, call_w
 from start_containers import stop_containers, start_container_set_1, start_container_set_2, start_container_set_3, start_container_set_5
 
 # FOLDERS
-scripts = path.scripts
-dataset = path.dataset
-dependencies = path.dependencies
-captured = path.captured
+scripts = paths.scripts
+dataset = paths.dataset
+dependencies = paths.dependencies
+captured = paths.captured
 # curr_dir = path.curr_dir
 
 # SCRIPTS
-get_ublock_log = path.get_ublock_log
-open_docker = path.open_docker
+get_ublock_log = paths.get_ublock_log
+open_docker = paths.open_docker
 
 
 # DOCUMENTS
@@ -342,5 +342,3 @@ def main():
 
 
 main()
-
-

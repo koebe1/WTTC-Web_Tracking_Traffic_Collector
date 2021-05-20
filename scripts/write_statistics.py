@@ -1,6 +1,6 @@
 import os.path
 import json
-import path
+import paths
 
 # Format of the parsed document
 #
@@ -15,7 +15,7 @@ import path
 
 def write_statistic(curr_dir, sub_dir):
 
-    captured = path.captured
+    captured = paths.captured
 
     json_file = os.path.join(captured, curr_dir, sub_dir, "data.json")
 
@@ -80,7 +80,7 @@ def write_statistic(curr_dir, sub_dir):
 # extraced blocked urls by ublock
 def extract_url_ublock(curr_dir, sub_dir):
 
-    captured = path.captured
+    captured = paths.captured
 
     ublock_log = os.path.join(captured, curr_dir,  "ublock_log.txt")
 
