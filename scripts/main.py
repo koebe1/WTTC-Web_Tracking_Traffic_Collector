@@ -150,6 +150,7 @@ def call_parallel_1(website_1, curr_dir):
 
 
 def collect_data(curr_dir):
+    
     temp = website_list.copy()
 
     # check how many container to start according to the number of websites to call (max number containers is 3)
