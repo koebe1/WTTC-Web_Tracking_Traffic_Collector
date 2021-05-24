@@ -182,38 +182,6 @@ def label_data(curr_dir, sub_dir):
                                 if(rules.should_block(http_request_full_uri, options)):
                                     packet["tracker"] = "true"
 
-                    # # CHECK RESPONSE URI AND DATA_FILE?
-                    # elif "http.response_for.uri" in http:
-                    #     http_response_for_uri = packet["_source"]["layers"]["http"]["http.response_for.uri"]
-
-                    #     # loop through new created ublock_log_list
-                    #     for blocked_element in ublock_log_list:
-                    #         # check if stripped_url is in http_response_for_uri
-                    #         if blocked_element["stripped_url"] in http_response_for_uri:
-
-                    #            # set options according to blocked_element in ublock_log_list
-                    #             options = blocked_element["options"]
-
-                    #             # check if url in http_request.full_uri should be blocked according to adblockparser
-                    #             if(rules.should_block(http_response_for_uri, options)):
-                    #                 packet["tracker"] = "true"
-
-                    # elif "http.file_data" in http:
-                    #     http_file_data = packet["_source"]["layers"]["http"]["http.file_data"]
-
-                    #     for blocked_element in ublock_log_list:
-                    #         # check if stripped_url is in http_response_for_uri
-                    #         if blocked_element["stripped_url"] in http_file_data:
-
-                    #             # set options according to blocked_element in ublock_log_list
-                    #             options = blocked_element["options"]
-
-                    #             # check if url in http_request.full_uri should be blocked according to adblockparser
-
-                    #             # NEED TO EXTRACT URL FROM http_file_data FIRST
-                    #             if(rules.should_block(HTTP-FILE-DATA, options)):
-                    #                 packet["tracker"] = "true"
-
             json_file.seek(0)
             # write to file
             json.dump(data, json_file, indent=4)

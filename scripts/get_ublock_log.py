@@ -14,7 +14,7 @@ import paths
 
 
 def extract_ublock_log(curr_dir):
-
+    print("")
     print("Extracting uBlock log...")
 
     dependencies = paths.dependencies

@@ -14,15 +14,14 @@ from write_statistics import write_statistic, extract_url_ublock
 from label import label_data
 from open_docker import open_docker_app
 from get_ublock_log import extract_ublock_log
-from website_calls import call_website_1, call_website_2, call_website_3, call_website_4, call_website_5
-from start_containers import stop_containers, start_container_set_1, start_container_set_2, start_container_set_3, start_container_set_5
+
 
 # FOLDERS
 scripts = paths.scripts
 dataset = paths.dataset
 dependencies = paths.dependencies
 captured = paths.captured
-# curr_dir = path.curr_dir
+
 
 # SCRIPTS
 get_ublock_log = paths.get_ublock_log
@@ -35,6 +34,11 @@ website_txt = "/Users/bene/Desktop/dataset2/websites.txt"
 # DATA
 website_list = []
 stripped_website_list = []
+
+with open(os.path.join(dependencies, 'config.yml')) as f:
+    config = yaml.safe_load(f)
+    num = config["num"]
+    max_container_num = config["max_container_num"]
 
 
 # FUNCTIONS
@@ -71,187 +75,81 @@ def create_folder(directory):
         print('Error creating folder:' + e)
 
 
-# manage PARALLEL CALLS
-def call_parallel_5(website_1, website_2, website_3, website_4, website_5, curr_dir):
+#  function for website calls
+def call_website(website, port):
+    driver = webdriver.Remote(f"http://127.0.0.1:{port}")
+    driver.get(website)
+    time.sleep(num)
 
-    # call websites simultaneously
-    c1 = multiprocessing.Process(
-        target=call_website_1, args=[website_1, curr_dir])
-
-    c2 = multiprocessing.Process(
-        target=call_website_2, args=[website_2, curr_dir])
-    c3 = multiprocessing.Process(
-        target=call_website_3, args=[website_3, curr_dir])
-
-    c4 = multiprocessing.Process(
-        target=call_website_4, args=[website_4, curr_dir])
-
-    c5 = multiprocessing.Process(
-        target=call_website_5, args=[website_5, curr_dir])
-
-    if __name__ == "__main__":
-        c1.start()
-        c2.start()
-        c3.start()
-        c4.start()
-        c5.start()
-        c1.join()
-        c2.join()
-        c3.join()
-        c4.join()
-        c5.join()
-
-
-def call_parallel_3(website_1, website_2, website_3, curr_dir):
-
-    # call websites simultaneously
-    c1 = multiprocessing.Process(
-        target=call_website_1, args=[website_1, curr_dir])
-
-    c2 = multiprocessing.Process(
-        target=call_website_2, args=[website_2, curr_dir])
-    c3 = multiprocessing.Process(
-        target=call_website_3, args=[website_3, curr_dir])
-
-    if __name__ == "__main__":
-        c1.start()
-        c2.start()
-        c3.start()
-        c1.join()
-        c2.join()
-        c3.join()
-
-
-def call_parallel_2(website_1, website_2, curr_dir):
-
-    # call websites simultaneously
-    c1 = multiprocessing.Process(
-        target=call_website_1, args=[website_1, curr_dir])
-
-    c2 = multiprocessing.Process(
-        target=call_website_2, args=[website_2, curr_dir])
-
-    if __name__ == "__main__":
-        c1.start()
-        c2.start()
-        c1.join()
-        c2.join()
-
-
-def call_parallel_1(website_1, curr_dir):
-
-    # call websites simultaneously
-    c1 = multiprocessing.Process(
-        target=call_website_1, args=[website_1, curr_dir])
-
-    if __name__ == "__main__":
-        c1.start()
-        c1.join()
+    driver.delete_all_cookies()
+    driver.quit()
 
 
 def collect_data(curr_dir):
-    
-    temp = website_list.copy()
 
-    # check how many container to start according to the number of websites to call (max number containers is 3)
-    while len(temp) > 0:
-        print("Starting to collect web traffic...")
+    # make copy so real lists dont get manipulated
+    websites = website_list.copy()
+    stripped_websites = stripped_website_list.copy()
+    print("")
+    print("Starting containers...")
+    print(
+        f"                       -> maximal container number set to: {max_container_num}")
+    print(
+        f"                       -> time to collect web traffic per website set to: {num}s")
 
-        # 5 chrome containers
-        if len(temp) >= 5:
+    print("")
 
-            # start 3 containers
-            start_container_set_5()
+    ports = []
 
-            # wait for containers to start up
-            time.sleep(15)
+    # start containers and call websites as long as there are websites in the websites list
+    while len(websites) > 0:
 
-            # get next websites to call
-            website_1 = temp[0]
-            website_2 = temp[1]
-            website_3 = temp[2]
-            website_4 = temp[3]
-            website_5 = temp[4]
+        i = 0
+        j = i+1
+        port_num = 4444
 
-            call_parallel_5(website_1, website_2, website_3,
-                            website_4, website_5, curr_dir)
+        # restrict number of containers by max_container_num and len(websites)
+        while max_container_num > i and i < len(websites):
+            # start containers with dynamic names, ports and volumes
+            os.system(
+                f'docker run --rm -d --name chrome_{j} -p {port_num}:{port_num} --expose={port_num} -v "/{curr_dir}/{stripped_websites[i]}/":/ssl -e SSLKEYLOGFILE=ssl/sslkeylogfile.txt retreatguru/headless-chromedriver chromedriver --port={port_num} --whitelisted-ips=')
+            os.system(
+                f'docker run --rm -d --name tcpdump_{j} --net=container:chrome_{j} -v /{curr_dir}/{stripped_websites[i]}/:/tcpdump kaazing/tcpdump  not host 127.0.0.1 and not host 172.17.0.1 -v -i any -w  tcpdump/tcpdump.pcap')
 
-            stop_containers()
-            time.sleep(1)
-            # remove websites from copied list temp
-            temp.pop(0)
-            temp.pop(0)
-            temp.pop(0)
-            temp.pop(0)
-            temp.pop(0)
+            ports.append(port_num)
+            port_num += 1
+            i += 1
+            j += 1
 
-        # 3 chrome containers
-        elif len(temp) < 5 and len(temp) >= 3:
+        # define list for processes
+        processes = []
 
-            # start 3 containers
-            start_container_set_3()
+        # start as many processes (website calls) as there are containers (i) with different websites and ports
+        for _ in range(i):
+            p = multiprocessing.Process(target=call_website, args=[
+                websites[0], ports[0]])
+            p.start()
+            processes.append(p)
+            # remove first element of websites, stripped_websites and ports as they have already been called/used
+            print(
+                f"                       Website {websites[0]} called on port {ports[0]}!")
+            websites.pop(0)
+            stripped_websites.pop(0)
+            ports.pop(0)
 
-            # wait for containers to start up
-            time.sleep(15)
+        # join processes to continue script if all processes are finished
+        for process in processes:
+            process.join()
 
-            # get next websites to call
-            website_1 = temp[0]
-            website_2 = temp[1]
-            website_3 = temp[2]
-
-            call_parallel_3(website_1, website_2, website_3, curr_dir)
-
-            time.sleep(1)
-            stop_containers()
-            # remove websites from copied list temp
-            temp.pop(0)
-            temp.pop(0)
-            temp.pop(0)
-
-        # 2 chrome containers
-        elif len(temp) < 3 and len(temp) >= 2:
-            start_container_set_2()
-
-            # wait for containers to start up
-            time.sleep(10)
-
-            # get next websites to call
-            website_1 = temp[0]
-            website_2 = temp[1]
-
-            # call websites parralel
-            call_parallel_2(website_1, website_2, curr_dir)
-
-            time.sleep(1)
-            stop_containers()
-
-            temp.pop(0)
-            temp.pop(0)
-
-        # 1 chrome containers
-        elif len(temp) == 1:
-            start_container_set_1()
-
-            # wait for containers to start up
-            time.sleep(10)
-
-            # get next websites to call
-            website_1 = temp[0]
-
-            # call websites parralel
-            call_parallel_1(website_1, curr_dir)
-
-            time.sleep(1)
-            stop_containers()
-
-            temp.pop(0)
+        os.system("docker kill $(docker ps -q)")
 
 
 def create_json_and_label_data(curr_dir):
     # get list of subdirectories
     sub_dirs = (next(os.walk(curr_dir))[1])
 
-    print("Creating JSON and labeling data...")
+    print("")
+    print("Labeling data...")
 
     total_blocked_urls_app = 0
 
@@ -262,14 +160,6 @@ def create_json_and_label_data(curr_dir):
 
         # change directory to sub_dir
         os.chdir(sub_dir_path)
-
-        # loop throuh current directory
-        for file in os.listdir('.'):
-            if re.match('tcpdump', file):
-                os.rename(file, "tcpdump.pcap")
-
-            elif re.match('sslkeylogfile', file):
-                os.rename(file, "sslkeylogfile.txt")
 
         ssl_path = os.path.join(
             captured, curr_dir, sub_dir, "sslkeylogfile.txt")
@@ -339,6 +229,7 @@ def main():
         # start docker and call the websites
         collect_data(curr_dir)
         create_json_and_label_data(curr_dir)
+        print("")
         print("Finsihed!")
 
 

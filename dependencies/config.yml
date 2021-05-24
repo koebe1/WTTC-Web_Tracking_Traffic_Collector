@@ -1,7 +1,10 @@
 # CONFIGURATIONS for the get_data programm
 
 # Specify time (in seconds) between website calls
-num: 8
+num: 5
+
+#  Speciy maximum number of containers running
+max_container_num: 10
 
 # Specify the path to your chrome-user-data-directory
 chrome_profile: "user-data-dir=/Users/bene/Library/Application Support/Google/Chrome/Default/Default"
