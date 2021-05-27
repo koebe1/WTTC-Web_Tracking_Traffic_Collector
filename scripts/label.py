@@ -3,7 +3,7 @@ from adblockparser import AdblockRules
 import json
 import os
 import re
-from paths import captured
+from paths import captured, dependencies
 
 
 def label_data(curr_dir, sub_dir):
@@ -107,12 +107,12 @@ def label_data(curr_dir, sub_dir):
 
     def label():
         # # option to use easyprivacy to check rules contained by that list against urls
-        # with open("/Users/bene/Desktop/dataset/dependencies/easyprivacy.txt", "rb") as f:
+        # with open(f"{dependencies}/easyprivacy.txt", "rb") as f:
         #     raw_rules = f.read().decode("utf8").splitlines()
-        #
+
         raw_rules = []
 
-        # use rules from uBlockLog for big performance upgrade -> used rules should be exactly the same
+        # use rules from uBlockLog for performance upgrade -> used rules should be exactly the same
         for entry in ublock_log_list:
             raw_rules.append(entry["rule"])
 

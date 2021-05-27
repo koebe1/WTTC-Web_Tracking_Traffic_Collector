@@ -132,7 +132,7 @@ def collect_data(curr_dir):
             processes.append(p)
             # remove first element of websites, stripped_websites and ports as they have already been called/used
             print(
-                f"                       Website {websites[0]} called on port {ports[0]}!")
+                f"Website {websites[0]} called on port {ports[0]}!")
             websites.pop(0)
             stripped_websites.pop(0)
             ports.pop(0)
