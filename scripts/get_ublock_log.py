@@ -38,11 +38,8 @@ def extract_ublock_log(curr_dir):
     options.add_argument(
         chrome_profile)
 
-    service = Service(
-        os.path.join(dependencies, 'chromedriver'))
-
-    driver = webdriver.Chrome(
-        service=service, options=options)
+    browser = os.path.join(dependencies, 'chromedriver')
+    driver = webdriver.Chrome(executable_path=browser, options=options)
 
     # specify the argument to call the python skript with --> -f "path to file"
     # parser = argparse.ArgumentParser()
@@ -64,8 +61,7 @@ def extract_ublock_log(curr_dir):
 
         # open all websites in the list in new tabs and wait for num (config.yml) seconds
         for website in websites:
-            driver.switch_to.new_window(website)
-            driver.get(website)
+            driver.execute_script(f'''window.open("{website}", "_blank");''')
 
         time.sleep(num)
 

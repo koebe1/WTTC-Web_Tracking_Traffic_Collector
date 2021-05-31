@@ -114,7 +114,7 @@ def collect_data(curr_dir):
             os.system(
                 f'docker run --rm -d --name chrome_{j} -p {port_num}:{port_num} --expose={port_num} -v "/{curr_dir}/{stripped_websites[i]}/":/ssl -e SSLKEYLOGFILE=ssl/sslkeylogfile.txt retreatguru/headless-chromedriver chromedriver --port={port_num} --whitelisted-ips=')
             os.system(
-                f'docker run --rm -d --name tcpdump_{j} --net=container:chrome_{j} -v /{curr_dir}/{stripped_websites[i]}/:/tcpdump kaazing/tcpdump  not host 127.0.0.1 and not host 172.17.0.1 -v -i any -w  tcpdump/tcpdump.pcap')
+                f'docker run --rm -d --name tcpdump_{j} --net=container:chrome_{j} -v /{curr_dir}/{stripped_websites[i]}/:/tcpdump kaazing/tcpdump  not host 127.0.0.1 and not host 172.17.0.1  -v -i any -w  tcpdump/tcpdump.pcap')
 
             ports.append(port_num)
             port_num += 1
