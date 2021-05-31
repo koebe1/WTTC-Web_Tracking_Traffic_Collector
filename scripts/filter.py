@@ -3,9 +3,9 @@ import json
 import os
 
 # define file path of the file you want to filter
-file = '/Users/bene/Desktop/dataset2/captured/create-dataset_canvas-fingerprinting/create-dataset.com/data.json'
+file = '/Users/bene/Desktop/dataset2/captured/create-dataset_local-Storage/create-dataset.com/data.json'
 # specify folder you want to save the filtered json file
-folder = '/Users/bene/Desktop/dataset2/captured/create-dataset_canvas-fingerprinting/create-dataset.com'
+folder = '/Users/bene/Desktop/dataset2/captured/create-dataset_local-Storage/create-dataset.com'
 
 
 def filter():

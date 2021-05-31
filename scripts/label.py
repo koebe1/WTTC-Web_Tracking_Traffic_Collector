@@ -120,7 +120,7 @@ def label_data(curr_dir, sub_dir):
         options = {}
 
         #  open json file
-        with open(data_json, "r+") as json_file:
+        with open(data_json, "r+", encoding="latin-1") as json_file:
             # Transforms json input to python objects
             data = json.load(json_file)
 

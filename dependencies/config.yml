@@ -1,7 +1,7 @@
 # CONFIGURATIONS for the get_data programm
 
-# Specify time (in seconds) between website calls
-num: 5
+# Specify time to collect web traffic
+num: 8
 
 #  Speciy maximum number of containers running
 max_container_num: 10

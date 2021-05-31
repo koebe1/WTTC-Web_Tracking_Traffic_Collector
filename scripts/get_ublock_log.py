@@ -12,6 +12,8 @@ import pyperclip
 import yaml
 import paths
 
+dataset = paths.dataset
+
 
 def extract_ublock_log(curr_dir):
     print("")
@@ -20,7 +22,7 @@ def extract_ublock_log(curr_dir):
     dependencies = paths.dependencies
     config = paths.config
 
-    website_txt = "/Users/bene/Desktop/dataset2/websites.txt"
+    website_txt = f"{dataset}/websites.txt"
 
     # load data from config
     with open(config) as f:
