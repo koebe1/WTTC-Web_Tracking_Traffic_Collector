@@ -29,7 +29,7 @@ open_docker = paths.open_docker
 
 
 # DOCUMENTS
-website_txt = "/Users/bene/Desktop/dataset2/websites.txt"
+website_txt = f"{dataset}/websites.txt"
 
 # DATA
 website_list = []
