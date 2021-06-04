@@ -39,6 +39,7 @@ with open(os.path.join(dependencies, 'config.yml')) as f:
     config = yaml.safe_load(f)
     num = config["num"]
     max_container_num = config["max_container_num"]
+    timeout = config["timeout"]
 
 
 # FUNCTIONS
@@ -111,6 +112,7 @@ def collect_data(curr_dir):
         # restrict number of containers by max_container_num and len(websites)
         while max_container_num > i and i < len(websites):
             # start containers with dynamic names, ports and volumes
+
             os.system(
                 f'docker run --rm -d --name chrome_{j} -p {port_num}:{port_num} --expose={port_num} -v "/{curr_dir}/{stripped_websites[i]}/":/ssl -e SSLKEYLOGFILE=ssl/sslkeylogfile.txt retreatguru/headless-chromedriver chromedriver --port={port_num} --whitelisted-ips=')
             os.system(
@@ -139,7 +141,7 @@ def collect_data(curr_dir):
 
         # join processes to continue script if all processes are finished
         for process in processes:
-            process.join()
+            process.join(timeout)
 
         os.system("docker kill $(docker ps -q)")
 
@@ -192,14 +194,16 @@ def main():
 
         # create folder system
         directory = input("Enter a directory name:")
-        curr_dir = os.path.join(captured, directory)
+        curr_dir = f"{captured}/{directory}"
 
         # create folder from user input
         create_folder(curr_dir)
 
         # create subdirectories
         for stripped in stripped_website_list:
-            stripped_path = os.path.join(curr_dir, stripped)
+
+            stripped_path = f"{curr_dir}/{stripped}"
+
             create_folder(stripped_path)
 
         # starting uBlock log extraction and open docker simultaneously if docker app is open
@@ -210,6 +214,7 @@ def main():
         with open(os.path.join(dependencies, 'config.yml')) as f:
             config = yaml.safe_load(f)
             docker_path = config["docker_path"]
+            docker_startup_time = config["docker_startup_time"]
 
         # check if docker app is open, if not open app and wait
         if "docker" in (p.name() for p in psutil.process_iter()):
@@ -220,7 +225,7 @@ def main():
             opener = "open" if sys.platform == "darwin" else "xdg-open"
             subprocess.call([opener, docker_path])
             print("Starting Docker...")
-            time.sleep(20)
+            time.sleep(docker_startup_time)
 
         # start uBlock log extraction
         extract.start()

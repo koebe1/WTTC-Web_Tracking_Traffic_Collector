@@ -1,7 +1,10 @@
 # CONFIGURATIONS for the get_data programm
 
 # Specify time to collect web traffic
-num: 8
+num: 12
+
+# Specify timeout for website call (in case website doesn't finsih loading )
+timeout: 20
 
 #  Speciy maximum number of containers running
 max_container_num: 10
@@ -11,3 +14,6 @@ chrome_profile: "user-data-dir=/Users/bene/Library/Application Support/Google/Ch
 
 # Specify path to your docker desktop application
 docker_path: "/Applications/Docker.app"
+
+# Specify time for docker to start up
+docker_startup_time: 30

@@ -1,15 +1,12 @@
-from __future__ import print_function
-import json
 import os
+from paths import captured
+import json
 
-# define file path of the file you want to filter
-file = '/Users/bene/Desktop/dataset2/captured/create-dataset_local-Storage/create-dataset.com/data.json'
-# specify folder you want to save the filtered json file
-folder = '/Users/bene/Desktop/dataset2/captured/create-dataset_local-Storage/create-dataset.com'
+curr_dir = "/Users/bene/Desktop/dataset2/captured/top5alexa/websites"
 
 
-def filter():
-    with open(file, 'r+') as jsonFile:
+def filter(folder):
+    with open(f"{folder}/data.json", 'r+') as jsonFile:
         # Transforms json input to python dict
         data = json.load(jsonFile)
 
@@ -37,8 +34,18 @@ def filter():
             filtered_list.append({'frame.number': packet['_source']['layers']['frame']['frame.number'],
                                   'tracker': packet['tracker']})
 
-    with open(os.path.join(folder, 'filtered.json'), 'w') as jsonFile:
+    with open(f"{folder}/filtered.json", 'w') as jsonFile:
         json.dump(filtered_list, jsonFile, indent=4)
 
 
-filter()
+def total():
+
+    sub_dirs = (next(os.walk(curr_dir))[1])
+
+    for sub_dir in sub_dirs:
+
+        sub_dir_path = f"{curr_dir}/{sub_dir}"
+        filter(sub_dir_path)
+
+
+total()
