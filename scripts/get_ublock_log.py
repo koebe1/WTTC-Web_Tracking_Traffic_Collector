@@ -59,15 +59,35 @@ def extract_ublock_log(curr_dir):
             'chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/logger-ui.html?popup=1')
         uBlock_window = driver.current_window_handle
 
-        # open all websites in the list in new tabs and wait for num (config.yml) seconds
-        for website in websites:
-            driver.execute_script(f'''window.open("{website}", "_blank");''')
+        with open(os.path.join(dependencies, 'config.yml')) as f:
+            config = yaml.safe_load(f)
+            max_website_num = config["max_website_num"]
 
-        time.sleep(num)
+        tabs = []
+        i = 0
+        # open all websites in the websites.txt  (upper limit at once -> max_website_num)
+        while i < len(websites):
+            j = 0
 
-        # maximize browser window
-        # driver.maximize_window()
+            # open as many websites as max_website_num
+            while max_website_num > j:
+                if i < len(websites):
+                    tab = websites[i].replace("https://", "").replace(".", "")
+                    tabs.append(tab)
+                    driver.execute_script(
+                        f'''{tab}= window.open("{websites[i]}", "_blank");''')
+                i += 1
+                j += 1
 
+            # wait "num" (config.yml) seconds
+            time.sleep(num)
+
+            # close open tabs
+            for tab in tabs:
+                driver.execute_script(
+                    f'''{tab}.close();''')
+
+        # switch to uBlock protocol
         for window_handle in driver.window_handles:
             if window_handle != uBlock_window:
                 driver.switch_to.window(uBlock_window)

@@ -1,13 +1,15 @@
 # CONFIGURATIONS for the get_data programm
 
 # Specify time to collect web traffic
-num: 12
+num: 8
 
+# Specify maximal number of websites you want to load once for ublock protocol collection
+max_website_num: 3
 # Specify timeout for website call (in case website doesn't finsih loading )
 timeout: 20
 
 #  Speciy maximum number of containers running
-max_container_num: 10
+max_container_num: 5
 
 # Specify the path to your chrome-user-data-directory
 chrome_profile: "user-data-dir=/Users/bene/Library/Application Support/Google/Chrome/Default/Default"
