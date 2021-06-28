@@ -52,7 +52,7 @@ Vorläufige Liste ReadMe:
    -> docker pull retreatguru/headless-chromedriver
    -> docker pull kaazing/tcpdump
 
-# SETTINGS in config.yml
+# SETTINGS
 
 The config.yml file gives you the ability to specify parameters of the application:
 
