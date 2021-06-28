@@ -30,7 +30,7 @@ def extract_ublock_log(curr_dir):
         num = config["num"]
         chrome_profile = config["chrome_profile"]
 
-    # start chrome with uBlock and your user settings -> important for the filter list settings in uBlock
+    # start chrome with uBlock and your user settings to use your specified filterlist
     options = webdriver.ChromeOptions()
     options.add_extension(
         os.path.join(dependencies, 'uBlock.crx'))
@@ -126,14 +126,15 @@ def extract_ublock_log(curr_dir):
             """
         # execute the defined JS code a,c,d
         driver.execute_script(a)
-        time.sleep(0.2)
+        time.sleep(0.1)
         driver.execute_script(c)
-        time.sleep(0.2)
+        time.sleep(0.1)
         driver.execute_script(d)
-        time.sleep(0.2)
+        time.sleep(0.1)
 
         driver.quit()
 
+    # write the saved content to file
     def writeClipboardToFile():
 
         joined_path = os.path.join(curr_dir, "ublock_log.txt")
