@@ -51,3 +51,21 @@ Vorläufige Liste ReadMe:
    Via Terminal:
    -> docker pull retreatguru/headless-chromedriver
    -> docker pull kaazing/tcpdump
+
+# SETTINGS in config.yml
+
+The config.yml file gives you the ability to specify parameters of the application:
+
+1. "num" specifys the number of seconds to capture the uBlock protocol and the web traffic.
+
+2. "max_website_num" specifys the maximal websites that are opened at once when extracting the uBlock protocol.
+
+3. "timeout" sets a timeout in case a website doesen't finish loading correctly.
+
+4. "max_container_num" specifys max amount of containers that capture traffic at once.
+
+5. "chrome_profile" let's you specify your chrome profile to start chrome with.
+
+6. "docker_path" specifys the path to your docker location to start docker if it is not running already.
+
+7. "docker_startup_time" specifys time to wait for docker to start up before running the application if docker wasn't running already.
