@@ -1,4 +1,4 @@
-# collect_data_app
+# web traffic collector
 
 Vorläufige Liste ReadMe:
 
