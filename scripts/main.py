@@ -232,8 +232,8 @@ def main():
         extract.join()
 
         # start docker and call the websites
-        # collect_data(curr_dir)
-        # create_json_and_label_data(curr_dir)
+        collect_data(curr_dir)
+        create_json_and_label_data(curr_dir)
         print("")
         print("Finsihed!")
 
