@@ -1,71 +1,76 @@
-# web traffic collector
+# WEB TRAFFIC COLLECTOR
 
-Vorläufige Liste ReadMe:
+    Web Traffic Collector is an application that lets you collect web traffic of websites and label web tracking packets according to a filterlist.
 
-- Docker Desktop notwendig
+    To do so it uses a web crawler in advance to the traffic collecting that generates a protocol of the used web trackers on the specified websites. On the basis of that protocol the resulting dataset can be labeld as tracking and non tracking packets.
 
-- Chromeversion & Chromedriver müssen zusammenpassen
+    The Applcation utulizes Google Chrome, uBlock Origin and Docker.
 
-- websites.txt nimmt nur websites mit Format https://example.com
+# Setup
 
-- Python dependencies file --> pip install -r requirements.txt
+    1. Check Chrome Version
 
----> (test with vm)
+    The Chromedriver used works for Chrome Version 91.0.4472.114.
+    For newer/older Version of Chrome get the according Chromedriver at
+    -> https://chromedriver.chromium.org/ and copy it to the "dependencies" folder of the application.
 
-# SETUP
+    2. Add your Chrome Profile to dependencies/config.yml
 
-1. Check Chrome Version
+    -> Windows 7, 8.1, and 10: C:\Users\<username>\AppData\Local\Google\Chrome\User
+    Data\Default
 
-   The Chromedriver used works for Chrome Version 91.0.4472.114.
-   For newer/older Version of Chrome get the according Chromedriver at
-   -> https://chromedriver.chromium.org/ and copy it to the "dependencies" folder of the application.
+    -> Mac OS X: Users/<username>/Library/Application Support/Google/Chrome/Default
 
-2. Add your Chrome Profile to dependencies/config.yml
+    -> Linux: /home/<username>/.config/google-chrome/default
 
-   -> Windows 7, 8.1, and 10: C:\Users\<username>\AppData\Local\Google\Chrome\User
-   Data\Default
+    3. Install uBlock Origin for Google Chrome
 
-   -> Mac OS X: Users/<username>/Library/Application Support/Google/Chrome/Default
+    To specify a filterlist of your choice go to
+    -> chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/dashboard.html#3p-filters.html and specify the web tracking filterlist of your choice.
 
-   -> Linux: /home/<username>/.config/google-chrome/default
+    4. Get the Application
 
-3. Install uBlock Origin for Google Chrome
+    Download the application from https://github.com/koebe1/web_traffic_collector or get it via your Terminal:
+    -> git clone https://github.com/koebe1/web_traffic_collector.git
 
-   To specify a filterlist of your choice go to
-   -> chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/dashboard.html#3p-filters.html and specify the web tracking filterlist of your choice.
+    5. Get Docker Desktop
 
-4. Get the Application
+    Download Docker Desktop at:
+    -> https://www.docker.com/products/docker-desktop
 
-   Download the application from https://github.com/koebe1/web_traffic_collector or get it via your Terminal:
-   -> git clone https://github.com/koebe1/web_traffic_collector.git
+    6. Add Your Path to Docker to dependencies/config.yml
 
-5. Get Docker Desktop
+    7. Get the Images for Docker
 
-   Download Docker Desktop at:
-   -> https://www.docker.com/products/docker-desktop
+    Via Terminal:
+    -> docker pull retreatguru/headless-chromedriver
+    -> docker pull kaazing/tcpdump
 
-6. Add Your Path to Docker to dependencies/config.yml
+    8. Install Python Dependencies
 
-7. Get the Images for Docker
+    Install from dependencies/requirements.txt via pip e.g.:
+    -> pip install -r requirements.txt
 
-   Via Terminal:
-   -> docker pull retreatguru/headless-chromedriver
-   -> docker pull kaazing/tcpdump
+# Settings
 
-# SETTINGS
+    The config.yml file gives you the ability to specify parameters of the application:
 
-The config.yml file gives you the ability to specify parameters of the application:
+    1. "num" specifys the number of seconds to capture the uBlock protocol and the web traffic.
 
-1. "num" specifys the number of seconds to capture the uBlock protocol and the web traffic.
+    2. "max_website_num" specifys the maximal websites that are opened at once when extracting the uBlock protocol.
 
-2. "max_website_num" specifys the maximal websites that are opened at once when extracting the uBlock protocol.
+    3. "timeout" sets a timeout in case a website doesen't finish loading correctly.
 
-3. "timeout" sets a timeout in case a website doesen't finish loading correctly.
+    4. "max_container_num" specifys max amount of containers that capture traffic at once.
 
-4. "max_container_num" specifys max amount of containers that capture traffic at once.
+    5. "chrome_profile" let's you specify your chrome profile to start chrome with.
 
-5. "chrome_profile" let's you specify your chrome profile to start chrome with.
+    6. "docker_path" specifys the path to your docker location to start docker if it is not running already.
 
-6. "docker_path" specifys the path to your docker location to start docker if it is not running already.
+    7. "docker_startup_time" specifys time to wait for docker to start up before running the application if docker wasn't running already.
 
-7. "docker_startup_time" specifys time to wait for docker to start up before running the application if docker wasn't running already.
+# Usage
+
+    1. Specify the websites to call in websites.txt in the format "https://example.org".
+
+    2. Run the executable file run_app to start the application.
