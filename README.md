@@ -2,7 +2,7 @@
 
     Web Traffic Collector is an application that lets you collect web traffic of websites and label web tracking packets according to a filterlist.
 
-    To do so it uses a web crawler in advance to the traffic collecting that generates a protocol of the used web trackers on the specified websites. On the basis of that protocol the resulting dataset can be labeld as tracking and non tracking packets.
+    To do so it uses a web crawler in advance to the traffic collecting that generates a protocol of the used web trackers on the specified websites. On the basis of that protocol the resulting dataset can be labeled as tracking and non tracking packets.
 
     The Applcation utulizes Google Chrome, uBlock Origin and Docker.
 
