@@ -44,7 +44,56 @@ with open(os.path.join(dependencies, 'config.yml')) as f:
 
 # FUNCTIONS
 
+def main():
+
+    # create folder system
+    directory = input("Enter a directory name:")
+    curr_dir = f"{captured}/{directory}"
+
+    # create folder from user input
+    create_folder(curr_dir)
+
+    # create subdirectories
+    for stripped in stripped_website_list:
+
+        stripped_path = f"{curr_dir}/{stripped}"
+
+        create_folder(stripped_path)
+
+    # starting uBlock log extraction and open docker simultaneously if docker app is open
+    extract = multiprocessing.Process(
+        target=extract_ublock_log, args=[curr_dir])
+
+    # get docker_path from config.yml
+    with open(os.path.join(dependencies, 'config.yml')) as f:
+        config = yaml.safe_load(f)
+        docker_path = config["docker_path"]
+        docker_startup_time = config["docker_startup_time"]
+
+    # check if docker app is open, if not open app and wait
+    if "docker" in (p.name() for p in psutil.process_iter()):
+        print("Docker is up and running...")
+
+    # start docker application
+    else:
+        opener = "open" if sys.platform == "darwin" else "xdg-open"
+        subprocess.call([opener, docker_path])
+        print("Starting Docker...")
+        time.sleep(docker_startup_time)
+
+    # start uBlock log extraction
+    extract.start()
+    extract.join()
+
+    # start docker and call the websites
+    collect_data(curr_dir)
+    create_json_and_label_data(curr_dir)
+    print("")
+    print("Finsihed!")
+
 # opens websites.txt file and extracts the websites into an array
+
+
 def get_website_list():
 
     with open(website_txt) as file:
@@ -188,54 +237,5 @@ def create_json_and_label_data(curr_dir):
             f"Blocked URLS:     Application:   {total_blocked_urls_app}       Ublock:   {total_blocked_urls_ublock}")
 
 
-def main():
-
-    if __name__ == "__main__":
-
-        # create folder system
-        directory = input("Enter a directory name:")
-        curr_dir = f"{captured}/{directory}"
-
-        # create folder from user input
-        create_folder(curr_dir)
-
-        # create subdirectories
-        for stripped in stripped_website_list:
-
-            stripped_path = f"{curr_dir}/{stripped}"
-
-            create_folder(stripped_path)
-
-        # starting uBlock log extraction and open docker simultaneously if docker app is open
-        extract = multiprocessing.Process(
-            target=extract_ublock_log, args=[curr_dir])
-
-        # get docker_path from config.yml
-        with open(os.path.join(dependencies, 'config.yml')) as f:
-            config = yaml.safe_load(f)
-            docker_path = config["docker_path"]
-            docker_startup_time = config["docker_startup_time"]
-
-        # check if docker app is open, if not open app and wait
-        if "docker" in (p.name() for p in psutil.process_iter()):
-            print("Docker is up and running...")
-
-        # start docker application
-        else:
-            opener = "open" if sys.platform == "darwin" else "xdg-open"
-            subprocess.call([opener, docker_path])
-            print("Starting Docker...")
-            time.sleep(docker_startup_time)
-
-        # start uBlock log extraction
-        extract.start()
-        extract.join()
-
-        # start docker and call the websites
-        collect_data(curr_dir)
-        create_json_and_label_data(curr_dir)
-        print("")
-        print("Finsihed!")
-
-
-main()
+if __name__ == "__main__":
+    main()
