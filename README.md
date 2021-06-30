@@ -14,8 +14,8 @@
 
     1. Check Chrome Version
 
-        The Chromedriver used works for Chrome Version 91.0.4472.114.
-        For newer/older Version of Chrome get the according Chromedriver at
+        The Chromedriver used works for Mac OS Chrome Version 91.0.4472.114.
+        For newer/older Version of Chrome get the according for your OS Chromedriver at
         -> https://chromedriver.chromium.org/ and copy it to the "dependencies" folder of the application.
 
     2. Add your Chrome Profile to dependencies/config.yml
