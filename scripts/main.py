@@ -137,7 +137,7 @@ def call_website(website, port):
 
 def collect_data(curr_dir):
 
-    # make copy so real lists dont get manipulated
+    # make copy so real list doesen't get manipulated
     websites = website_list.copy()
     stripped_websites = stripped_website_list.copy()
     print("")
@@ -158,7 +158,7 @@ def collect_data(curr_dir):
         j = i+1
         port_num = 4444
 
-        # restrict number of containers by max_container_num and len(websites)
+        # restrict number of containers by max container number and length of website list
         while max_container_num > i and i < len(websites):
             # start containers with dynamic names, ports and volumes
 
