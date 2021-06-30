@@ -36,26 +36,29 @@
 
         Download the application from https://github.com/koebe1/web_traffic_collector or get it via your Terminal:
         -> git clone https://github.com/koebe1/web_traffic_collector.git
-
-    5. Get Docker Desktop
+    5. Get Tshark at:
+    
+       -> https://tshark.dev/setup/install/ 
+       
+    6. Get Docker Desktop
 
         Download Docker Desktop at:
         -> https://www.docker.com/products/docker-desktop
 
-    6. Add Your Path to Docker to dependencies/config.yml
+    7. Add Your Path to Docker to dependencies/config.yml
 
-    7. Get the Images for Docker
+    8. Get the Images for Docker
 
         Via Terminal:
         -> docker pull retreatguru/headless-chromedriver
         -> docker pull kaazing/tcpdump
 
-    8. Install Python Dependencies
+    9. Install Python Dependencies
 
         Install from dependencies/requirements.txt via pip e.g.:
         -> pip install -r requirements.txt
 
-    9. Change run_app to a Executable for your OS
+    10. If your not on a Mac OS Change run_app to a Executable for your OS
 
 # Settings
 
