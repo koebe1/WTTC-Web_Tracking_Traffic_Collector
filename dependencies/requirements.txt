@@ -4,6 +4,6 @@ numpy==1.20.3
 psutil==5.8.0
 pyperclip==1.8.2
 selenium==4.0.0a7
-selenium-update==0.0.0
+
 
 

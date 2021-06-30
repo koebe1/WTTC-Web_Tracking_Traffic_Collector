@@ -1,10 +1,14 @@
 # WEB TRAFFIC COLLECTOR
 
-    Web Traffic Collector is an application that lets you collect web traffic of websites and label web tracking packets according to a filterlist.
+    Web Traffic Collector is an application that
+    lets you collect web traffic of websites and
+    label web tracking packets according to a filterlist.
 
-    To do so it uses a web crawler in advance to the traffic collecting that generates a protocol of the used web trackers on the specified websites. On the basis of that protocol the resulting dataset can be labeled as tracking and non tracking packets.
-
-    The Applcation utulizes Google Chrome, uBlock Origin and Docker.
+    To do so it uses a web crawler in advance to the
+    traffic collecting that generates a protocol of
+    the used web trackers on the specified websites.
+    On the basis of that protocol the resulting dataset
+    can be labeled as tracking and non tracking packets.
 
 # Setup
 
@@ -76,30 +80,28 @@
     1. Specify the websites to call in websites.txt in the format "https://example.org".
 
     2. Run the executable file run_app to start the application.
-    
+
     3. Choose a foldername to save your capture in.
-    
+
     4. After the programm finishes running the output will be:
-    
+
         -> a folder with the name you specified at captured/"yourFolderName"
-        
+
             in that folder:
-            
-            -> "ublock_log.txt" the uBlock protocol 
-            
-            -> "total_statistics.txt" a statistics file with the number of tracker in the ublock protocol 
-            and the captured data 
-            
+
+            -> "ublock_log.txt" the uBlock protocol
+
+            -> "total_statistics.txt" a statistics file with the number of tracker in the ublock protocol
+            and the captured data
+
             -> a folder for each website that was called
-                   
+
                 in that folder:
-                
+
                 -> "blocked_urls_applicationsl.txt" a summary of the tracker urls from the captured data
-                
+
                 -> "sskeylogfile.txt" the ssl keylog file to decrypt the web traffic of the website
-                
+
                 -> "tcpdump.pcap" a pcap file with the captured data
-                
+
                 -> "data.json" a JSON file with the labeled data
-                
-            
