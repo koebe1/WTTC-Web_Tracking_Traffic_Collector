@@ -1,4 +1,2 @@
-https://amazon.com
-https://yahoo.com
-
+https://example.org
 

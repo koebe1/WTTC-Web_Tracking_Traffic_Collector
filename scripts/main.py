@@ -64,7 +64,7 @@ def main():
     extract = multiprocessing.Process(
         target=extract_ublock_log, args=[curr_dir])
 
-    # get docker_path from config.yml
+    # get docker_path from config.yml w
     with open(os.path.join(dependencies, 'config.yml')) as f:
         config = yaml.safe_load(f)
         docker_path = config["docker_path"]

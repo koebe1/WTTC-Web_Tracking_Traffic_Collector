@@ -1,14 +1,19 @@
-# WEB TRAFFIC COLLECTOR
+# WTTC - WEB TRACKING TRAFFIC COLLECTOR
 
-    Web Traffic Collector is an application that
+    Web Tracking Traffic Collector is an application that
     lets you collect web traffic of websites and
     label web tracking packets according to a filterlist.
 
     To do so it uses a web crawler in advance to the
     traffic collecting that generates a protocol of
     the used web trackers on the specified websites.
-    On the basis of that protocol the resulting dataset
+    On that basis the resulting dataset
     can be labeled as tracking and non tracking packets.
+
+    The application utilizes uBlock Origin, Docker, TcpDump and Tshark to achieve it's goal.
+
+    Note that WTTC was written for the use on MAC OS.
+    For the use on other operating systems changes have to be made to the source code.
 
 # Setup
 
@@ -30,16 +35,16 @@
     3. Install uBlock Origin for Google Chrome
 
         To specify a filterlist of your choice go to
-        -> chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/dashboard.html#3p-filters.html and specify the web               tracking filterlist of your choice.
+        -> chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/dashboard.html#3p-filters.html and specify the web tracking filterlist of your choice.
 
     4. Get the Application
 
         Download the application from https://github.com/koebe1/web_traffic_collector or get it via your Terminal:
         -> git clone https://github.com/koebe1/web_traffic_collector.git
     5. Get Tshark at:
-    
-       -> https://tshark.dev/setup/install/ 
-       
+
+       -> https://tshark.dev/setup/install/
+
     6. Get Docker Desktop
 
         Download Docker Desktop at:
