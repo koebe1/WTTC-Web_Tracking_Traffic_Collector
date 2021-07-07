@@ -10,10 +10,15 @@
     On that basis the resulting dataset
     can be labeled as tracking and non tracking packets.
 
-    The application utilizes uBlock Origin, Docker, TcpDump and Tshark to achieve it's goal.
-
     Note that WTTC was written for the use on MAC OS.
     For the use on other operating systems changes have to be made to the source code.
+
+    ###Built utilizing:
+
+        * [uBlock Origin](https://ublockorigin.com/)
+        * [Docker](https://www.docker.com/)
+        * [Tcpdump](https://www.tcpdump.org/)
+        * [Tshark](https://www.wireshark.org/docs/man-pages/tshark.html)
 
 # Setup
 
