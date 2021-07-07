@@ -1,32 +1,28 @@
 # WTTC - WEB TRACKING TRAFFIC COLLECTOR
 
-    Web Tracking Traffic Collector is an application that
-    lets you collect web traffic of websites and
-    label web tracking packets according to a filterlist.
+    Web Tracking Traffic Collector is an application that lets you collect web traffic of websites and label web tracking packets according to a filterlist.
 
-    To do so it uses a web crawler in advance to the
-    traffic collecting that generates a protocol of
-    the used web trackers on the specified websites.
-    On that basis the resulting dataset
-    can be labeled as tracking and non tracking packets.
+    To do so it uses a web crawler in advance to the traffic collecting that generates a protocol of the used web trackers on the specified websites. After that the web traffic is collected in docker containers. On the basis of the extracted protocol in the first step, the resulting dataset can be labeled as tracking and non tracking packets.
 
     Note that WTTC was written for the use on MAC OS.
     For the use on other operating systems changes have to be made to the source code.
 
-    ###Built utilizing:
+    WTTC was built utilizing:
 
-        * [uBlock Origin](https://ublockorigin.com/)
-        * [Docker](https://www.docker.com/)
-        * [Tcpdump](https://www.tcpdump.org/)
-        * [Tshark](https://www.wireshark.org/docs/man-pages/tshark.html)
+        - Chrome Browser(https://www.google.com/chrome/)
+        - uBlock Origin (https://ublockorigin.com/)
+        - Docker        (https://www.docker.com/)
+        - Tcpdump       (https://www.tcpdump.org/)
+        - Tshark        (https://www.wireshark.org/docs/man-pages/tshark.html)
 
-# Setup
+# Prerequisites
 
-    1. Check Chrome Version
+    1. Check if your Chrome Version fits the Chromedriver:
 
         The Chromedriver used works for Mac OS Chrome Version 91.0.4472.114.
-        For newer/older Version of Chrome get the according for your OS Chromedriver at
-        -> https://chromedriver.chromium.org/ and copy it to the "dependencies" folder of the application.
+        For newer/older Version of Chrome get the according for your OS Chromedriver at:
+        -> https://chromedriver.chromium.org/
+        and copy it to the "dependencies" folder of the application.
 
     2. Add your Chrome Profile to dependencies/config.yml
 
@@ -46,26 +42,28 @@
 
         Download the application from https://github.com/koebe1/web_traffic_collector or get it via your Terminal:
         -> git clone https://github.com/koebe1/web_traffic_collector.git
+
     5. Get Tshark at:
 
+        Download Tshark at:
        -> https://tshark.dev/setup/install/
 
-    6. Get Docker Desktop
+    6. Get Docker Desktop:
 
         Download Docker Desktop at:
         -> https://www.docker.com/products/docker-desktop
 
     7. Add Your Path to Docker to dependencies/config.yml
 
-    8. Get the Images for Docker
+    8. Get the needed Images for Docker:
 
         Via Terminal:
         -> docker pull retreatguru/headless-chromedriver
         -> docker pull kaazing/tcpdump
 
-    9. Install Python Dependencies
+    9. Install Python Dependencies:
 
-        Install from dependencies/requirements.txt via pip e.g.:
+        Install from dependencies/requirements.txt via e.g. pip:
         -> pip install -r requirements.txt
 
     10. If your not on a Mac OS Change run_app to a Executable for your OS
@@ -74,19 +72,19 @@
 
     The config.yml file gives you the ability to specify parameters of the application:
 
-    1. "num" specifys the number of seconds to capture the uBlock protocol and the web traffic.
+    - "num" specifys the number of seconds to capture the uBlock protocol       and the web traffic.
 
-    2. "max_website_num" specifys the maximal websites that are opened at once when extracting the uBlock protocol.
+    - "max_website_num" specifys the maximal websites that are opened at        once when extracting the uBlock protocol.
 
-    3. "timeout" sets a timeout in case a website doesen't finish loading correctly.
+    - "timeout" sets a timeout in case a website doesen't finish loading        correctly.
 
-    4. "max_container_num" specifys max amount of containers that capture traffic at once.
+    - "max_container_num" specifys max amount of containers that capture        traffic at once.
 
-    5. "chrome_profile" let's you specify your chrome profile to start chrome with.
+    - "chrome_profile" let's you specify your chrome profile to start chrome    with.
 
-    6. "docker_path" specifys the path to your docker location to start docker if it is not running already.
+    - "docker_path" specifys the path to your docker location to start docker   if it is not running already.
 
-    7. "docker_startup_time" specifys time to wait for docker to start up before running the application if docker wasn't running already.
+    - "docker_startup_time" specifys time to wait for docker to start up        before running the application if docker wasn't running already.
 
 # Usage
 
