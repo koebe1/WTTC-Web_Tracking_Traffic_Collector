@@ -1,23 +1,27 @@
 # WTTC - WEB TRACKING TRAFFIC COLLECTOR
 
-    Web Tracking Traffic Collector is an application that lets you collect web traffic of websites and label web tracking packets according to a filterlist.
+    Web Tracking Traffic Collector is an application that lets you collect web traffic of websites and 
+    label web tracking packets according to a filterlist.
 
-    To do so it uses a web crawler in advance to the traffic collecting that generates a protocol of the used web trackers on the specified websites. After that the web traffic is collected in docker containers. On the basis of the extracted protocol in the first step, the resulting dataset can be labeled as tracking and non tracking packets.
+    To do so it uses a web crawler in advance to the traffic collecting that generates a protocol of 
+    the used web trackers on the specified websites. After that the web traffic is collected in docker containers. 
+    On the basis of the extracted protocol in the first step, the resulting dataset can be labeled as tracking 
+    and non tracking packets.
 
     Note that WTTC was written for the use on MAC OS.
     For the use on other operating systems changes have to be made to the source code.
 
     WTTC was built utilizing:
 
-        - Chrome Browser(https://www.google.com/chrome/)
-        - uBlock Origin (https://ublockorigin.com/)
-        - Docker        (https://www.docker.com/)
-        - Tcpdump       (https://www.tcpdump.org/)
-        - Tshark        (https://www.wireshark.org/docs/man-pages/tshark.html)
+        - Chrome Browser (https://www.google.com/chrome/)
+        - uBlock Origin  (https://ublockorigin.com/)
+        - Docker         (https://www.docker.com/)
+        - Tcpdump        (https://www.tcpdump.org/)
+        - Tshark         (https://www.wireshark.org/docs/man-pages/tshark.html)
 
 # Prerequisites
 
-    1. Check if your Chrome Version fits the Chromedriver:
+    1. Check if your Chrome Version fits the Chromedriver
 
         The Chromedriver used works for Mac OS Chrome Version 91.0.4472.114.
         For newer/older Version of Chrome get the according for your OS Chromedriver at:
@@ -36,65 +40,78 @@
     3. Install uBlock Origin for Google Chrome
 
         To specify a filterlist of your choice go to
-        -> chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/dashboard.html#3p-filters.html and specify the web tracking filterlist of your choice.
+        -> chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/dashboard.html#3p-filters.html 
+        and specify the web tracking filterlist of your choice.
 
     4. Get the Application
 
-        Download the application from https://github.com/koebe1/web_traffic_collector or get it via your Terminal:
+        Download the application from
+        -> https://github.com/koebe1/web_traffic_collector 
+        or get it via your Terminal:
         -> git clone https://github.com/koebe1/web_traffic_collector.git
 
-    5. Get Tshark at:
+    5. Get Tshark at
 
         Download Tshark at:
        -> https://tshark.dev/setup/install/
 
-    6. Get Docker Desktop:
+    6. Get Docker Desktop
 
         Download Docker Desktop at:
         -> https://www.docker.com/products/docker-desktop
 
-    7. Add Your Path to Docker to dependencies/config.yml
+    7. Add Your Path to the Docker application to dependencies/config.yml
 
-    8. Get the needed Images for Docker:
+    8. Get the needed Images for Docker
 
         Via Terminal:
         -> docker pull retreatguru/headless-chromedriver
         -> docker pull kaazing/tcpdump
 
-    9. Install Python Dependencies:
+    9. Install Python Dependencies
 
         Install from dependencies/requirements.txt via e.g. pip:
         -> pip install -r requirements.txt
 
-    10. If your not on a Mac OS Change run_app to a Executable for your OS
+    10. If not on MAC OS 
+    
+        - Change run_app to a Executable File for your OS
+        - Change source code where needed
 
 # Settings
 
-    The config.yml file gives you the ability to specify parameters of the application:
+    The config.yml file gives you the ability to specify a number of parameters to 
+    customize the use of the application:
 
-    - "num" specifys the number of seconds to capture the uBlock protocol       and the web traffic.
+    - "num" specifys the number of seconds to capture the uBlock protocol and the web traffic.
 
-    - "max_website_num" specifys the maximal websites that are opened at        once when extracting the uBlock protocol.
+    - "max_website_num" specifys the maximal websites that are opened at once when extracting 
+      the uBlock protocol.
 
-    - "timeout" sets a timeout in case a website doesen't finish loading        correctly.
+    - "timeout" sets a timeout in case a website doesen't finish loading correctly.
 
-    - "max_container_num" specifys max amount of containers that capture        traffic at once.
+    - "max_container_num" specifys max amount of containers that capture traffic at once.
 
-    - "chrome_profile" let's you specify your chrome profile to start chrome    with.
+    - "chrome_profile" let's you specify your chrome profile to start chrome with.
 
-    - "docker_path" specifys the path to your docker location to start docker   if it is not running already.
+    - "docker_path" specifys the path to your docker location to start docker if it's not 
+       running already.
 
-    - "docker_startup_time" specifys time to wait for docker to start up        before running the application if docker wasn't running already.
+    - "docker_startup_time" specifys time to wait for docker to start up before running 
+      the application if docker wasn't running already. 
+      Note that while this isn't a perfect solution, programming this dynamically 
+      (e.g. waiting for the process instead of hard coding the startup time)
+      complicates the use of the application on different operating systems.
 
 # Usage
 
-    1. Specify the websites to call in websites.txt in the format "https://example.org".
+    1. Specify the websites to call in websites.txt in the format "https://example.org"
 
-    2. Run the executable file run_app to start the application.
+    2. Run the executable file run_app to start the application
 
-    3. Choose a foldername to save your capture in.
+    3. Choose a foldername to save your recording in
 
-    4. After the programm finishes running the output will be:
+    After the programm finishes running the output will be:
 
         -> a folder with the name you specified at captured/"yourFolderName"
 
@@ -103,7 +120,7 @@
             -> "ublock_log.txt" the uBlock protocol
 
             -> "total_statistics.txt" a statistics file with the number of tracker in the ublock protocol
-            and the captured data
+                and the captured data
 
             -> a folder for each website that was called
 
