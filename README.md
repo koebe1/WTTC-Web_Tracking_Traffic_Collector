@@ -24,7 +24,7 @@
     1. Check if your Chrome Version fits the Chromedriver
 
         The Chromedriver used works for Mac OS Chrome Version 91.0.4472.114.
-        For newer/older Version of Chrome get the according for your OS Chromedriver at:
+        For newer/older Version of Chrome get the according Chromedriver for your OS at:
         -> https://chromedriver.chromium.org/
         and copy it to the "dependencies" folder of the application.
 
@@ -42,38 +42,32 @@
         To specify a filterlist of your choice go to
         -> chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/dashboard.html#3p-filters.html 
         and specify the web tracking filterlist of your choice.
+        
 
-    4. Get the Application
-
-        Download the application from
-        -> https://github.com/koebe1/web_traffic_collector 
-        or get it via your Terminal:
-        -> git clone https://github.com/koebe1/web_traffic_collector.git
-
-    5. Get Tshark at
+    4. Get Tshark at
 
         Download Tshark at:
        -> https://tshark.dev/setup/install/
 
-    6. Get Docker Desktop
+    5. Get Docker Desktop
 
         Download Docker Desktop at:
         -> https://www.docker.com/products/docker-desktop
 
-    7. Add Your Path to the Docker application to dependencies/config.yml
+    6. Add Your Path to the Docker application to dependencies/config.yml
 
-    8. Get the needed Images for Docker
+    7. Download the needed Images for Docker
 
         Via Terminal:
         -> docker pull retreatguru/headless-chromedriver
         -> docker pull kaazing/tcpdump
 
-    9. Install Python Dependencies
+    8. Install Python Dependencies
 
         Install from dependencies/requirements.txt via e.g. pip:
         -> pip install -r requirements.txt
 
-    10. If not on MAC OS 
+    9. If not on MAC OS 
     
         - Change run_app to a Executable File for your OS
         - Change source code where needed
